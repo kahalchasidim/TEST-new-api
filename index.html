@@ -2,51 +2,58 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>Bayswater Master Board</title>
+<title>Bayswater Master Board - Locked Standard</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@400;700;800&family=Suez+One&display=swap');
   :root { --gold: #c29d6d; }
   * { box-sizing: border-box; margin: 0; padding: 0; overflow: hidden; }
   body { background: #000; color: #fff; font-family: 'Suez One', serif; width: 100vw; height: 100vh; }
+  
   .master-frame { height: 100vh; width: 100vw; display: flex; flex-direction: column; padding: 5px; gap: 8px; border: 12px solid var(--gold); }
+  
   .branding-bar { height: 5.5vh; display: flex; align-items: center; justify-content: center; position: relative; border-bottom: 1px solid #333; }
   .branding-shul { font-size: 4.2vh; color: #FDEFD4; font-weight: bold; }
+  
   #ENG_SIDE { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); font-size: 2.5vh; color: var(--gold); font-family: 'Assistant', sans-serif; direction: ltr; font-weight: 700; white-space: nowrap; }
   #WEATHER { color: #ccc; }
   #BSD { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); font-size: 2.8vh; color: var(--gold); font-family: 'Assistant', sans-serif; font-weight: 700; }
+  
   .clock-section { height: 18vh; display: flex; align-items: stretch; justify-content: space-between; border: 2px solid var(--gold); border-radius: 12px; background: #050505; padding: 0; }
+  
   .status-stack { flex: 1.1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 0; gap: 2px; }
   #DAY_LABEL, #DATE_LABEL, #PARSHA_LABEL { font-size: 5.8vh; line-height: 0.9; white-space: nowrap; padding: 0; margin: 0; }
+
   .main-clock { flex: 1.5; display: flex; align-items: center; justify-content: center; font-size: 21vh; line-height: 0.8; font-weight: 800; font-family: 'Assistant', sans-serif; transform: translateY(-0.8vh); }
+  
   .left-stack { flex: 1.2; display: flex; align-items: stretch; justify-content: stretch; }
+
   .message-box { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-weight: bold; border-radius: 10px; padding: 0; border: none !important; }
   .teal-box { background: #004d40; color: #00bfa5; } 
   .gold-box { color: var(--gold); background: #050505; }
   #status-head { font-size: 8.5vh; line-height: 1; display: block; }
   #status-sub { font-size: 4vh; color: white; display: block; margin-top: 2px; }
+
   .main-body { height: 71vh; display: flex; gap: 10px; }
   .zemanim-col { width: 21vw; border: 2px solid var(--gold); border-radius: 10px; display: flex; flex-direction: column; padding: 2px; background: #050505; }
   .z-row { display: flex; justify-content: space-between; padding: 0px 8px; border-bottom: 1px solid #222; align-items: center; flex: 1; }
   .z-label { color: var(--gold); font-size: 3.1vh; }
   .z-time { color: white; font-size: 2.7vh; font-family: 'Assistant', sans-serif; font-weight: 800; direction: ltr; }
-  /* This makes the seconds smaller and slightly see-through */
-.secs { 
-  font-size: 0.75em; 
-  opacity: 0.6; 
-  font-weight: 400; 
-  margin-left: 1px;
-}
   .active-zman { background: var(--gold) !important; }
   .active-zman .z-label, .active-zman .z-time { color: #000 !important; }
+
   .content-col { flex: 1; display: flex; flex-direction: column; gap: 10px; }
   .data-box { flex: 1.2; border: 2px solid var(--gold); border-radius: 10px; background: #080808; display: flex; align-items: center; justify-content: center; text-align: center; padding: 0; overflow: hidden; }
   .data-box span { font-weight: 800; font-size: 4.8vh; line-height: 1.1; display: block; width: 100%; word-wrap: break-word; }
+  
   .img-box { flex: 1.5; border: 2px solid var(--gold); border-radius: 10px; background: #000; overflow: hidden; position: relative; }
   .img-box img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; }
+  
   .omer-box { flex: 1.3; border: 2px solid var(--gold); border-radius: 10px; background: #001f1a; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0; text-align: center; }
   .omer-header { font-size: 2.2vh; color: #ccc; margin-bottom: -5px; }
   #O2 { color: var(--gold); font-weight: 800; font-size: 4.2vh; line-height: 1.2; width: 100%; display: block; padding: 0 5px; }
   #O_BECHINA { font-size: 3.5vh; color: #fff; border-top: 1px solid #444; padding-top: 2px; margin-top: 6px; width: 90%; }
+
+  .secs { font-size: 0.75em; opacity: 0.6; font-weight: 400; margin-left: 1px; }
 </style>
 </head>
 <body>
@@ -57,6 +64,7 @@
     <div class="branding-shul">קהל חסידים ד'בעיסוואטער</div>
     <div id="BSD">בס"ד</div> 
   </div>
+
   <div class="clock-section">
     <div class="status-stack">
         <div id="DAY_LABEL">--</div> 
@@ -66,6 +74,7 @@
     <div class="main-clock" id="CLOCK">00:00:00</div>
     <div class="left-stack" id="LEFT_MSG"></div>
   </div>
+
   <div class="main-body">
     <div class="zemanim-col" id="ZMANIM_LIST">
         <div class="z-row" id="r1"><span class="z-label">עלות השחר</span><span class="z-time" id="z1">--:--</span></div>
@@ -81,6 +90,7 @@
         <div class="z-row" id="r10"><span class="z-label">שקיעת החמה</span><span class="z-time" id="z10">--:--</span></div>
         <div class="z-row" id="r11" style="background:#2b2400;"><span class="z-label">רבינו תם</span><span class="z-time" id="z11">--:--</span></div>
     </div>
+
     <div class="content-col">
       <div style="height:48%; display:flex; gap:10px;">
           <div class="data-box" style="flex:1.2;"><span id="ANN"></span></div>
@@ -101,8 +111,16 @@
 </div>
 
 <script>
+/**
+ * THE BAYSWATER PROTOCOL - MASTER RULES
+ * 1. CLOCK: 12h format ticking seconds.
+ * 2. MATH: Rabbeinu Tam (72) +1 Min, Candles -1 Min.
+ * 3. FLIP LOGIC: Date @ Alos (Zman #1), Omer @ RT-25 Mins.
+ * 4. STATUS: Shabbat (Friday Candle to Sat RT), Motzaei (After RT), Tachanun (Teal).
+ * 5. NEW VISUALS: Small light seconds, No AM/PM.
+ */
+
 const $ = id => document.getElementById(id);
-// PASTE YOUR SCRIPT URL IN THE QUOTES BELOW
 var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzM897zNF5YK5yigHnEOVqnRHRd3MkDWzNmVK_uFvRv4uNDB9VpZgxoaROfRlsNkzZCjA/exec";
 
 const OMER_STRINGS = {
@@ -127,15 +145,12 @@ function shiftTime(tStr, offsetMins) {
     if (nh > 12) nh -= 12; if (nh === 0) nh = 12;
     return nh + ":" + String(nm).padStart(2, '0') + ":" + String(ns).padStart(2, '0');
 }
-  function fmtZman(t) {
+
+function fmtZman(t) {
     if (!t || t.includes("--")) return "--:--";
-    // 1. Remove AM/PM
     let cleanTime = t.replace(/(AM|PM|am|pm)/g, "").trim();
-    // 2. Split the time parts
     let p = cleanTime.split(':');
-    let h = p[0], m = p[1], s = p[2] || "00";
-    // 3. Return the hours and minutes, with seconds in the small span
-    return `${h}:${m}<span class="secs">:${s}</span>`;
+    return `${p[0]}:${p[1]}<span class="secs">:${p[2] || "00"}</span>`;
 }
 
 function getSec(tStr, isPM) {
@@ -146,9 +161,7 @@ function getSec(tStr, isPM) {
 }
 
 function getIso(date) {
-    let y = date.getFullYear();
-    let m = String(date.getMonth() + 1).padStart(2, '0');
-    let d = String(date.getDate()).padStart(2, '0');
+    let y = date.getFullYear(), m = String(date.getMonth() + 1).padStart(2, '0'), d = String(date.getDate()).padStart(2, '0');
     return `${y}-${m}-${d}`;
 }
 
@@ -159,63 +172,62 @@ function fit(el, startVh) {
         vh -= 0.1; el.style.fontSize = vh + "vh";
     }
 }
+
+function updateClock() {
+    let now = new Date(), h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
+    $('CLOCK').innerHTML = (h % 12 || 12) + ":" + String(m).padStart(2, '0') + ":" + String(s).padStart(2, '0');
+    $('ENG_DATE').innerText = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+}
+
 function loadWeather() {
-    // Fetches weather for Bayswater (40.598, -73.765)
     fetch("https://api.open-meteo.com/v1/forecast?latitude=40.598&longitude=-73.765&current_weather=true&temperature_unit=fahrenheit")
     .then(r => r.json()).then(data => {
-        if(data && data.current_weather) {
-            $('WEATHER').innerText = " | " + Math.round(data.current_weather.temperature) + "°F";
-        }
-    }).catch(e => console.log("Weather error"));
+        if(data && data.current_weather) $('WEATHER').innerText = " | " + Math.round(data.current_weather.temperature) + "°F";
+    });
 }
+
 function updateUI() {
     let now = new Date(), h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
     let cSec = (h * 3600) + (m * 60) + s, dayW = now.getDay(); 
-    $('CLOCK').innerHTML = (h % 12 || 12) + ":" + String(m).padStart(2, '0') + ":" + String(s).padStart(2, '0');
-    $('ENG_DATE').innerText = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 
     let isoToday = getIso(now);
     let dToday = schedule[isoToday];
     if (!dToday) return;
 
     let rtSecsRaw = getSec(dToday.z[10], true);
+    // FLIP LOGIC: Date flips at Alos, Omer flips 25 mins before RT
     let omerActiveIso = (cSec >= (rtSecsRaw - 1500)) ? getIso(new Date(now.getTime() + 86400000)) : isoToday;
     let dateActiveIso = (cSec < getSec(dToday.z[0], false)) ? getIso(new Date(now.getTime() - 86400000)) : isoToday;
 
     let dOmer = schedule[omerActiveIso] || dToday;
     let dDate = schedule[dateActiveIso] || dToday;
 
-   if (dateActiveIso !== lastDateIso) {
+    if (dateActiveIso !== lastDateIso) {
         lastDateIso = dateActiveIso;
         $('DAY_LABEL').innerText = dDate.day;
         $('DATE_LABEL').innerText = dDate.heb;
         $('PARSHA_LABEL').innerText = dDate.parsha ? "פרשת " + dDate.parsha : "";
         for (let i=1; i<=11; i++) {
             let baseT = dDate.z[i-1];
-            // We use .innerHTML now so it can read the <span> tag
             let displayT = (i === 11) ? shiftTime(baseT, 1) : baseT;
-            $('z'+i).innerHTML = fmtZman(displayT); 
+            $('z'+i).innerHTML = fmtZman(displayT);
         }
     }
 
     if (dayW === 5) {
         $('row_special').style.display = 'flex';
-        // Format the candle lighting time too
         $('z_spec_time').innerHTML = fmtZman(shiftTime(dToday.candle || dToday.z[9], -1));
     } else { $('row_special').style.display = 'none'; }
 
-    $('O_HEAD').innerText = "ספירת העומר";
     let oNum = dOmer.omerNum;
     if (oNum) {
         let full = OMER_STRINGS[oNum] || oNum + " יום";
         $('O2').innerText = "היום " + full + " לעומר";
         $('O_BECHINA').innerText = dOmer.bechina || "";
-    } else {
-        $('O2').innerText = "";
-        $('O_BECHINA').innerText = "";
-    }
+    } else { $('O2').innerText = ""; $('O_BECHINA').innerText = ""; }
     fit($('O2'), 7.0);
 
+    // STATUS LOGIC
     let tachReason = dDate.tachReason;
     let isShab = (dayW === 5 && dToday.candle && cSec >= getSec(dToday.candle, true)) || (dayW === 6 && cSec < rtSecsRaw);
     let isMotz = (dayW === 6 && cSec >= rtSecsRaw);
@@ -248,15 +260,11 @@ function loadData() {
         if (d.p5) $('p5').src = "https://drive.google.com/thumbnail?id="+d.p5+"&sz=w1200";
     });
 }
-setInterval(updateClock, 1000); 
-updateClock();
-loadData(); 
-setInterval(loadData, 30000); 
-setInterval(updateUI, 1000);
 
-// NEW WEATHER LINES
-loadWeather(); 
-setInterval(loadWeather, 900000); 
+setInterval(updateClock, 1000); updateClock();
+loadWeather(); setInterval(loadWeather, 900000);
+loadData(); setInterval(loadData, 30000); 
+setInterval(updateUI, 1000);
 </script>
 </body>
 </html>
