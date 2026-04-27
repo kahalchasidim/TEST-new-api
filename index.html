@@ -218,17 +218,17 @@ function updateUI() {
         $('z_spec_time').innerHTML = fmtZman(shiftTime(dToday.candle || dToday.z[9], -1));
     } else { $('row_special').style.display = 'none'; }
     
-    // --- THE BATTLE FOR THE BOTTOM BOX (OMER / MOLED / SUMMER) ---
+   // --- THE BATTLE FOR THE BOTTOM BOX (OMER / MOLED / SUMMER) ---
     let moledInfo = dDate.moled || "";
     let isMoledTime = (cSec >= 32400 && cSec <= 45000); // 9:00 AM to 12:30 PM
 
     if (moledInfo && isMoledTime) {
-        $('OMER').querySelector('.omer-header').style.display = 'block';
-        $('OMER').querySelector('.omer-header').innerText = "מולד הלבנה";
-        $('OMER').querySelector('.omer-header').style.color = "var(--gold)";
+        // 1. MOLED MODE - No header, just centered Moled time
+        $('OMER').querySelector('.omer-header').style.display = 'none';
         $('O2').innerText = moledInfo;
         $('O_BECHINA').style.display = 'none';
     } else if (dOmer.omerNum) {
+        // 2. OMER MODE - Header stays for the count
         $('OMER').querySelector('.omer-header').style.display = 'block';
         $('OMER').querySelector('.omer-header').innerText = "ספירת העומר";
         $('OMER').querySelector('.omer-header').style.color = "#ccc";
@@ -238,6 +238,7 @@ function updateUI() {
             $('O_BECHINA').style.display = 'block';
         } else { $('O_BECHINA').style.display = 'none'; }
     } else {
+        // 3. SUMMER MODE
         $('OMER').querySelector('.omer-header').style.display = 'none';
         $('O_BECHINA').style.display = 'none';
         $('O2').innerText = defaultSummerMsg;
