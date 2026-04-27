@@ -235,7 +235,7 @@ function updateUI() {
     if (dateActiveIso !== lastDateIso) {
         lastDateIso = dateActiveIso;
         $('DAY_LABEL').innerText = dDate.day;
-        $('DATE_LABEL').innerText = dDate.heb + " תשפ״ו";
+        $('DATE_LABEL').innerText = dDate.heb;
         $('PARSHA_LABEL').innerText = dDate.parsha ? "פרשת " + dDate.parsha : "";
         for (let i=1; i<=11; i++) {
             let baseT = dDate.z[i-1];
