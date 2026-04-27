@@ -138,10 +138,11 @@
  * - Tachanun: Teal box + Reason.
  * - Default: "מוריד הטל / ותן ברכה".
  * - After Omer looks for clm F for txt.
+ * - it looks for the moled and displays in the omer box and displays when rosh chodesh is 
  */
 
 const $ = id => document.getElementById(id);
-var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxpoHMjpVMd1XctYA0tHSWXyKlYaeDhRIP8_NflaBy2jSgdZXCcOI6O8SKcGx5brAwVPA/exec"; 
+var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyDmRrmvNQ772ghK_qWLOjS0XMeu3eEe5AR_0SXHzitgfMh1egEgqtQguy-LTiiUdVpnA/exec"; 
 
 var defaultSummerMsg = ""; 
 
@@ -200,6 +201,7 @@ function updateUI() {
     let oIso = (cSec >= (rtSecs - 1500)) ? getIso(new Date(now.getTime() + 86400000)) : getIso(now);
     let dIso = (cSec < getSec(dToday.z[0], false)) ? getIso(new Date(now.getTime() - 86400000)) : getIso(now);
     let dOmer = schedule[oIso] || dToday, dDate = schedule[dIso] || dToday;
+    
     if (dIso !== lastDateIso) {
         lastDateIso = dIso;
         $('DAY_LABEL').innerText = DAY_MAP[dDate.day] || dDate.day;
@@ -210,40 +212,68 @@ function updateUI() {
             $('z'+i).innerHTML = fmtZman((i === 11) ? shiftTime(bt, 1) : bt);
         }
     }
+    
     if (now.getDay() === 5) {
         $('row_special').style.display = 'flex';
         $('z_spec_time').innerHTML = fmtZman(shiftTime(dToday.candle || dToday.z[9], -1));
     } else { $('row_special').style.display = 'none'; }
     
-    // OMER / SUMMER FLIP logic
-    if (dOmer.omerNum) {
-        // 1. OMER MODE: Show header and count
-        $('OMER').querySelector('.omer-header').style.display = 'block'; 
+    // --- THE BATTLE FOR THE BOTTOM BOX (OMER / MOLED / SUMMER) ---
+    let moledInfo = dDate.moled || "";
+    let isMoledTime = (cSec >= 32400 && cSec <= 45000); // 9:00 AM to 12:30 PM
+
+    if (moledInfo && isMoledTime) {
+        // 1. MOLED MODE
+        $('OMER').querySelector('.omer-header').style.display = 'block';
+        $('OMER').querySelector('.omer-header').innerText = "מולד הלבנה";
+        $('OMER').querySelector('.omer-header').style.color = "var(--gold)";
+        $('O2').innerText = moledInfo;
+        $('O_BECHINA').style.display = 'none';
+    } else if (dOmer.omerNum) {
+        // 2. OMER MODE
+        $('OMER').querySelector('.omer-header').style.display = 'block';
+        $('OMER').querySelector('.omer-header').innerText = "ספירת העומר";
+        $('OMER').querySelector('.omer-header').style.color = "#ccc";
         $('O2').innerText = "היום " + (OMER_STRINGS[dOmer.omerNum] || dOmer.omerNum + " יום") + " לעומר";
-        
-        // Only show Bechina div (and its line) if there is actually text in the sheet
         if (dOmer.bechina && dOmer.bechina.trim() !== "") {
             $('O_BECHINA').innerText = dOmer.bechina;
             $('O_BECHINA').style.display = 'block';
-        } else {
-            $('O_BECHINA').style.display = 'none';
-        }
+        } else { $('O_BECHINA').style.display = 'none'; }
     } else {
-        // 2. SUMMER MODE: Hide everything except the message
-        $('OMER').querySelector('.omer-header').style.display = 'none'; 
-        $('O_BECHINA').style.display = 'none'; // This kills the ghost line!
-        $('O2').innerText = defaultSummerMsg; 
+        // 3. SUMMER MODE
+        $('OMER').querySelector('.omer-header').style.display = 'none';
+        $('O_BECHINA').style.display = 'none';
+        $('O2').innerText = defaultSummerMsg;
     }
 
-    fit($('O2'), 5.5); 
+    fit($('O2'), 5.5);
     fit($('O_BECHINA'), 3.5);
 
+    // --- STATUS BOX LOGIC (MEVARCHIM / TACHANUN) ---
     let tR = dDate.tachReason, dayW = now.getDay();
-    let isSh = (dayW===5 && dToday.candle && cSec >= getSec(dToday.candle,true)) || (dayW===6 && cSec < rtSecs);
-    let isMo = (dayW===6 && cSec >= rtSecs);
-    let head = isSh ? "שבת קודש" : (isMo ? "מוצאי שבת" : (tR ? "אין אומרים תחנון" : "מוריד הטל"));
-    let sub = isSh ? "" : (isMo ? "אתה חוננתנו" : (tR ? tR : "ותן ברכה"));
-    let cls = (isSh || isMo || !tR) ? "gold-box" : "teal-box";
+    let isShab = (dayW===5 && dToday.candle && cSec >= getSec(dToday.candle,true)) || (dayW===6 && cSec < rtSecs);
+    let isMotz = (dayW===6 && cSec >= rtSecs);
+    let rcInfo = dDate.rcInfo || ""; 
+    
+    let head = "";
+    if (isShab) {
+        head = (moledInfo && moledInfo.trim() !== "") ? "שבת מברכים" : "שבת קודש";
+    } else if (isMotz) {
+        head = "מוצאי שבת";
+    } else {
+        head = tR ? "אין אומרים תחנון" : "מוריד הטל";
+    }
+
+    let sub = "";
+    if (isShab) {
+        sub = (moledInfo && rcInfo) ? rcInfo : ""; 
+    } else if (isMotz) {
+        sub = "אתה חוננתנו";
+    } else {
+        sub = tR ? tR : "ותן ברכה";
+    }
+
+    let cls = (isShab || isMotz || !tR) ? "gold-box" : "teal-box";
     let sH = `<div class="message-box ${cls}"><span id="status-head">${head}</span><span id="status-sub">${sub}</span></div>`;
     if (sH !== currentStatusHTML) { $('LEFT_MSG').innerHTML = sH; currentStatusHTML = sH; }
 
