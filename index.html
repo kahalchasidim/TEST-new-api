@@ -215,17 +215,28 @@ function updateUI() {
         $('z_spec_time').innerHTML = fmtZman(shiftTime(dToday.candle || dToday.z[9], -1));
     } else { $('row_special').style.display = 'none'; }
     
-    // OMER / SUMMER FLIP
+    // OMER / SUMMER FLIP logic
     if (dOmer.omerNum) {
+        // 1. OMER MODE: Show header and count
         $('OMER').querySelector('.omer-header').style.display = 'block'; 
         $('O2').innerText = "היום " + (OMER_STRINGS[dOmer.omerNum] || dOmer.omerNum + " יום") + " לעומר";
-        $('O_BECHINA').innerText = dOmer.bechina || "";
+        
+        // Only show Bechina div (and its line) if there is actually text in the sheet
+        if (dOmer.bechina && dOmer.bechina.trim() !== "") {
+            $('O_BECHINA').innerText = dOmer.bechina;
+            $('O_BECHINA').style.display = 'block';
+        } else {
+            $('O_BECHINA').style.display = 'none';
+        }
     } else {
+        // 2. SUMMER MODE: Hide everything except the message
         $('OMER').querySelector('.omer-header').style.display = 'none'; 
+        $('O_BECHINA').style.display = 'none'; // This kills the ghost line!
         $('O2').innerText = defaultSummerMsg; 
-        $('O_BECHINA').innerText = ""; 
     }
-    fit($('O2'), 5.5); fit($('O_BECHINA'), 3.5);
+
+    fit($('O2'), 5.5); 
+    fit($('O_BECHINA'), 3.5);
 
     let tR = dDate.tachReason, dayW = now.getDay();
     let isSh = (dayW===5 && dToday.candle && cSec >= getSec(dToday.candle,true)) || (dayW===6 && cSec < rtSecs);
