@@ -143,10 +143,16 @@
  * - Tachanun: Teal box + Reason.
  * - Default: "מוריד הטל / ותן ברכה".
  */
-const $ = id => document.getElementById(id);
-var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxiWoQIiYIgFelfxvoejZMSM-eJlE0ZhWIuxyOS4JnkeSaYSdUr71GjLSuXzlsPjiQxdw/exec";
 
-const OMER_STRINGS = {
+const $ = id => document.getElementById(id);
+// YOUR URL GOES HERE
+var SCRIPT_URL = "https://script.google.com/macros/s/AKfycb.../exec"; 
+
+// --- ADD THIS LINE RIGHT HERE ---
+var defaultSummerMsg = ""; 
+// --------------------------------
+
+const OMER_STRINGS = { ... }; // Leave the rest of the Omer list alone
   1:"יום אחד", 2:"שני ימים", 3:"שלשה ימים", 4:"ארבעה ימים", 5:"חמשה ימים", 6:"ששה ימים", 7:"שבוע אחד",
   8:"שמונה ימים שהם שבוע אחד ויום אחד", 9:"תשעה ימים שהם שבוע אחד ושני ימים", 10:"עשרה ימים שהם שבוע אחד ושלשה ימים",
   11:"אחד עשר יום שהם שבוע אחד וארבעה ימים", 12:"שנים עשר יום שהם שבוע אחד וחמשה ימים", 13:"שלשה עשר יום שהם שבוע אחד וששה ימים", 14:"ארבעה עשר יום שהם שני שבועות",
@@ -246,15 +252,23 @@ function updateUI() {
         $('z_spec_time').innerHTML = fmtZman(shiftTime(dToday.candle || dToday.z[9], -1));
     } else { $('row_special').style.display = 'none'; }
 
-    let oNum = dOmer.omerNum;
-    if (oNum) {
-        let full = OMER_STRINGS[oNum] || oNum + " יום";
+    // This is the new logic for the Omer / Summer Message box
+    if (dOmer.omerNum) {
+        // 1. Show the "Sefirat HaOmer" title
+        $('OMER').querySelector('div').style.display = 'block'; 
+        
+        let full = OMER_STRINGS[dOmer.omerNum] || dOmer.omerNum + " יום";
         $('O2').innerText = "היום " + full + " לעומר";
         $('O_BECHINA').innerText = dOmer.bechina || "";
-    } else { $('O2').innerText = ""; $('O_BECHINA').innerText = ""; }
-    
-   // This fills the Omer and Bechina text correctly
-    fit($('O2'), 5.5);
+    } else {
+        // 2. Hide the title and show your Column F message
+        $('OMER').querySelector('div').style.display = 'none'; 
+        $('O2').innerText = defaultSummerMsg; 
+        $('O_BECHINA').innerText = ""; 
+    }
+
+    // Keep these here so the text always fits the box perfectly
+    fit($('O2'), 5.5); 
     fit($('O_BECHINA'), 3.5);
 
     let tachReason = dDate.tachReason;
@@ -282,6 +296,10 @@ function loadData() {
     fetch(SCRIPT_URL + "?cb=" + new Date().getTime()).then(r => r.json()).then(d => {
         if (!d) return;
         schedule = d.schedule;
+        
+        // --- ADD THIS LINE ---
+        defaultSummerMsg = d.defaultMsg; 
+        
         $('ANN').innerText = d.announcements || ""; fit($('ANN'), 4.8);
         $('TEF').innerText = d.tefila || ""; fit($('TEF'), 4.8);
         if (d.p1) $('p1').src = "https://drive.google.com/thumbnail?id="+d.p1+"&sz=w1200";
