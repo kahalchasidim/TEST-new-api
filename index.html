@@ -64,7 +64,15 @@
   
   .omer-box { flex: 1.3; border: 2px solid var(--gold); border-radius: 10px; background: #001f1a; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0; text-align: center; }
   .omer-header { font-size: 2.2vh; color: #ccc; margin-bottom: -5px; }
-  #O2 { color: var(--gold); font-weight: 800; font-size: 4.2vh; line-height: 1.2; width: 100%; display: block; padding: 0 5px; }
+  #O2 { 
+    color: var(--gold); 
+    font-weight: 800; 
+    font-size: 4.2vh; 
+    line-height: 1.1; 
+    width: 92%; /* Gives a small gap on the left and right */
+    display: block; 
+    margin: 0 auto; /* Centers the text box */
+  }
   #O_BECHINA { font-size: 3.5vh; color: #fff; border-top: 1px solid #444; padding-top: 2px; margin-top: 6px; width: 90%; }
 
   .secs { font-size: 0.75em; opacity: 0.6; font-weight: 400; margin-left: 1px; }
@@ -248,7 +256,8 @@ function updateUI() {
         $('O2').innerText = "היום " + full + " לעומר";
         $('O_BECHINA').innerText = dOmer.bechina || "";
     } else { $('O2').innerText = ""; $('O_BECHINA').innerText = ""; }
-    fit($('O2'), 7.0);
+    fit($// We lowered this from 7.0 to 5.5 so it starts smaller and looks cleaner
+    fit($('O_BECHINA'), 3.5);
 
     let tachReason = dDate.tachReason;
     let isShab = (dayW === 5 && dToday.candle && cSec >= getSec(dToday.candle, true)) || (dayW === 6 && cSec < rtSecsRaw);
