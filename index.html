@@ -271,7 +271,8 @@ function updateUI() {
     }
     fit($('O2'), 10.0);
 
-    let tachReason = TACHANUN_LIST[dDate.heb];
+   // New way (pulls from your Sheet)
+    let tachReason = dDate.tachReason;
     let isMotz = (dayW === 6 && cSec >= rtSecsRaw);
     let isShab = (dayW === 5 && dToday.candle && cSec >= getSec(dToday.candle, true)) || (dayW === 6 && cSec < rtSecsRaw);
 
@@ -297,6 +298,10 @@ function updateUI() {
 function loadData() {
     fetch(SCRIPT_URL + "?cb=" + new Date().getTime()).then(r => r.json()).then(d => {
         if (!d) return;
+        
+        // This line is the "brain" - it saves the Zmanim and Tachanun from the sheet
+        schedule = d.schedule; 
+
         $('ANN').innerText = d.announcements || ""; fit($('ANN'), 4.8);
         $('TEF').innerText = d.tefila || ""; fit($('TEF'), 4.8);
         if (d.p1) $('p1').src = "https://drive.google.com/thumbnail?id="+d.p1+"&sz=w1200";
