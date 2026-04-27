@@ -29,6 +29,13 @@
   .z-row { display: flex; justify-content: space-between; padding: 0px 8px; border-bottom: 1px solid #222; align-items: center; flex: 1; }
   .z-label { color: var(--gold); font-size: 3.1vh; }
   .z-time { color: white; font-size: 2.7vh; font-family: 'Assistant', sans-serif; font-weight: 800; direction: ltr; }
+  /* This makes the seconds smaller and slightly see-through */
+.secs { 
+  font-size: 0.75em; 
+  opacity: 0.6; 
+  font-weight: 400; 
+  margin-left: 1px;
+}
   .active-zman { background: var(--gold) !important; }
   .active-zman .z-label, .active-zman .z-time { color: #000 !important; }
   .content-col { flex: 1; display: flex; flex-direction: column; gap: 10px; }
@@ -120,6 +127,16 @@ function shiftTime(tStr, offsetMins) {
     if (nh > 12) nh -= 12; if (nh === 0) nh = 12;
     return nh + ":" + String(nm).padStart(2, '0') + ":" + String(ns).padStart(2, '0');
 }
+  function fmtZman(t) {
+    if (!t || t.includes("--")) return "--:--";
+    // 1. Remove AM/PM
+    let cleanTime = t.replace(/(AM|PM|am|pm)/g, "").trim();
+    // 2. Split the time parts
+    let p = cleanTime.split(':');
+    let h = p[0], m = p[1], s = p[2] || "00";
+    // 3. Return the hours and minutes, with seconds in the small span
+    return `${h}:${m}<span class="secs">:${s}</span>`;
+}
 
 function getSec(tStr, isPM) {
     if (!tStr || tStr.includes("--")) return 0;
@@ -160,20 +177,23 @@ function updateUI() {
     let dOmer = schedule[omerActiveIso] || dToday;
     let dDate = schedule[dateActiveIso] || dToday;
 
-    if (dateActiveIso !== lastDateIso) {
+   if (dateActiveIso !== lastDateIso) {
         lastDateIso = dateActiveIso;
         $('DAY_LABEL').innerText = dDate.day;
         $('DATE_LABEL').innerText = dDate.heb;
         $('PARSHA_LABEL').innerText = dDate.parsha ? "פרשת " + dDate.parsha : "";
         for (let i=1; i<=11; i++) {
             let baseT = dDate.z[i-1];
-            $('z'+i).innerText = (i === 11) ? shiftTime(baseT, 1) : baseT;
+            // We use .innerHTML now so it can read the <span> tag
+            let displayT = (i === 11) ? shiftTime(baseT, 1) : baseT;
+            $('z'+i).innerHTML = fmtZman(displayT); 
         }
     }
 
     if (dayW === 5) {
         $('row_special').style.display = 'flex';
-        $('z_spec_time').innerText = shiftTime(dToday.candle || dToday.z[9], -1);
+        // Format the candle lighting time too
+        $('z_spec_time').innerHTML = fmtZman(shiftTime(dToday.candle || dToday.z[9], -1));
     } else { $('row_special').style.display = 'none'; }
 
     $('O_HEAD').innerText = "ספירת העומר";
