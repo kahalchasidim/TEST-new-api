@@ -113,11 +113,24 @@
 <script>
 /**
  * THE BAYSWATER PROTOCOL - MASTER RULES
- * 1. CLOCK: 12h format ticking seconds.
- * 2. MATH: Rabbeinu Tam (72) +1 Min, Candles -1 Min.
- * 3. FLIP LOGIC: Date @ Alos (Zman #1), Omer @ RT-25 Mins.
- * 4. STATUS: Shabbat (Friday Candle to Sat RT), Motzaei (After RT), Tachanun (Teal).
- * 5. NEW VISUALS: Small light seconds, No AM/PM.
+ * ---------------------------------------------------
+ * 1. CLOCK: 12h format with ticking seconds.
+ * 2. MATH: 
+ * - Rabbeinu Tam (Zman 11) = Schedule + 1 Minute.
+ * - Candle Lighting = Schedule - 1 Minute.
+ * 3. FLIP LOGIC:
+ * - Date & Parsha: Flip to NEXT day at Alos (Zman #1).
+ * - Omer: Flip to NEXT day 25 Minutes BEFORE Rabbeinu Tam (Zman #11).
+ * 4. STATUS BOX (Top Left):
+ * - Shabbat: Friday Candles until Saturday RT (72).
+ * - Motzaei Shabbat: At RT (72) on Saturday.
+ * - Tachanun: Teal box + Reason if date is in Tachanun list.
+ * - Default: "מוריד הטל / ותן ברכה".
+ * 5. VISUALS: 
+ * - Clock stretched vertical (font-size: 19vh, narrow weight 700).
+ * - Letter spacing -5px to prevent clock cutoff.
+ * - Small seconds: Smaller font, 60% opacity.
+ * - AM/PM: Removed from all time displays.
  */
 
 const $ = id => document.getElementById(id);
