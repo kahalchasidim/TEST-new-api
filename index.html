@@ -23,7 +23,6 @@
   .status-stack { flex: 1.1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 0; gap: 2px; }
   #DAY_LABEL, #DATE_LABEL, #PARSHA_LABEL { font-size: 5.8vh; line-height: 0.9; white-space: nowrap; padding: 0; margin: 0; }
 
-  /* NARROW CLOCK: Keeps 21vh height but squishes width to 75% */
   .main-clock { 
     flex: 1.6; 
     display: flex; 
@@ -40,7 +39,6 @@
   }
   
   .left-stack { flex: 1.2; display: flex; align-items: stretch; justify-content: stretch; }
-
   .message-box { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-weight: bold; border-radius: 10px; padding: 0; border: none !important; }
   .teal-box { background: #004d40; color: #00bfa5; } 
   .gold-box { color: var(--gold); background: #050505; }
@@ -64,11 +62,8 @@
   
   .omer-box { flex: 1.3; border: 2px solid var(--gold); border-radius: 10px; background: #001f1a; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0; text-align: center; }
   .omer-header { font-size: 2.2vh; color: #ccc; margin-bottom: -5px; }
-  #O2 { 
-    color: var(--gold); font-weight: 800; font-size: 4.2vh; line-height: 1.1; width: 92%; display: block; margin: 0 auto; 
-  }
+  #O2 { color: var(--gold); font-weight: 800; font-size: 4.2vh; line-height: 1.1; width: 92%; display: block; margin: 0 auto; }
   #O_BECHINA { font-size: 3.5vh; color: #fff; border-top: 1px solid #444; padding-top: 2px; margin-top: 6px; width: 90%; }
-
   .secs { font-size: 0.75em; opacity: 0.6; font-weight: 400; margin-left: 1px; }
 </style>
 </head>
@@ -116,8 +111,8 @@
       <div style="height:48%; display:flex; gap:10px;">
           <div class="img-box" style="flex:1.4;"><img id="p4" src=""></div>
           <div class="omer-box" id="OMER">
-              <div class="omer-header" id="O_HEAD">ספירת העומר</div>
-              <span id="O2">היום...</span>
+              <div class="omer-header">ספירת העומר</div>
+              <span id="O2"></span>
               <div id="O_BECHINA"></div>
           </div>
           <div class="img-box" style="flex:1.4;"><img id="p5" src=""></div>
@@ -142,17 +137,15 @@
  * - Motzaei Shabbat: At RT (72) on Saturday.
  * - Tachanun: Teal box + Reason.
  * - Default: "מוריד הטל / ותן ברכה".
+ * - After Omer looks for clm F for txt.
  */
 
 const $ = id => document.getElementById(id);
-// YOUR URL GOES HERE
-var SCRIPT_URL = "https://script.google.com/macros/s/AKfycb.../exec"; 
+var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzM897zNF5YK5yigHnEOVqnRHRd3MkDWzNmVK_uFvRv4uNDB9VpZgxoaROfRlsNkzZCjA/exec"; 
 
-// --- ADD THIS LINE RIGHT HERE ---
 var defaultSummerMsg = ""; 
-// --------------------------------
 
-const OMER_STRINGS = { ... }; // Leave the rest of the Omer list alone
+const OMER_STRINGS = {
   1:"יום אחד", 2:"שני ימים", 3:"שלשה ימים", 4:"ארבעה ימים", 5:"חמשה ימים", 6:"ששה ימים", 7:"שבוע אחד",
   8:"שמונה ימים שהם שבוע אחד ויום אחד", 9:"תשעה ימים שהם שבוע אחד ושני ימים", 10:"עשרה ימים שהם שבוע אחד ושלשה ימים",
   11:"אחד עשר יום שהם שבוע אחד וארבעה ימים", 12:"שנים עשר יום שהם שבוע אחד וחמשה ימים", 13:"שלשה עשר יום שהם שבוע אחד וששה ימים", 14:"ארבעה עשר יום שהם שני שבועות",
@@ -162,125 +155,86 @@ const OMER_STRINGS = { ... }; // Leave the rest of the Omer list alone
   36:"ששה ושלשים יום שהם חמשה שבועות ויום אחד", 37:"שבעה ושלשים יום שהם חמשה שבועות ושני ימים", 38:"שמונה ושלשים יום שהם חמשה שבועות ושלשה ימים", 39:"תשעה ושלשים יום שהם חמשה שבועות וארבעה ימים", 40:"ארבעים יום שהם חמשה שבועות וחמשה ימים", 41:"אחד וארבעים יום שהם חמשה שבועות וששה ימים", 42:"שנים וארבעים יום שהם ששה שבועות",
   43:"שלשה וארבעים יום שהם ששה שבועות ויום אחד", 44:"ארבעה וארבעים יום שהם ששה שבועות ושני ימים", 45:"חמשה וארבעים יום שהם ששה שבועות ושלשה ימים", 46:"ששה וארבעים יום שהם ששה שבועות וארבעה ימים", 47:"שבעה וארבעים יום שהם ששה שבועות וחמשה ימים", 48:"שמונה וארבעים יום שהם ששה שבועות וששה ימים", 49:"תשעה וארבעים יום שהם שבעה שבועות"
 };
-
 const DAY_MAP = { "Sun": "יום ראשון", "Mon": "יום שני", "Tue": "יום שלישי", "Wed": "יום רביעי", "Thu": "יום חמישי", "Fri": "ערב ש\"ק", "Sha": "שבת קודש", "Sat": "שבת קודש" };
+var schedule = {}, lastDateIso = "", currentStatusHTML = "", currentlyHighlightedId = null;
 
-var schedule = {};
-var lastDateIso = "", currentStatusHTML = "", currentlyHighlightedId = null;
-
-function shiftTime(tStr, offsetMins) {
-    if (!tStr || tStr.includes("--")) return "--:--:--";
-    let p = tStr.split(':'), h = parseInt(p[0]), m = parseInt(p[1]), s = parseInt(p[2]||0);
-    let totalSecs = (h*3600) + (m*60) + s + (offsetMins * 60);
-    let nh = Math.floor(totalSecs / 3600), nm = Math.floor((totalSecs % 3600) / 60), ns = totalSecs % 60;
+function shiftTime(t, o) {
+    if (!t || t.includes("--")) return "--:--:--";
+    let p = t.split(':'), h = parseInt(p[0]), m = parseInt(p[1]), s = parseInt(p[2]||0);
+    let total = (h*3600) + (m*60) + s + (o * 60);
+    let nh = Math.floor(total / 3600), nm = Math.floor((total % 3600) / 60), ns = total % 60;
     if (nh > 12) nh -= 12; if (nh === 0) nh = 12;
     return nh + ":" + String(nm).padStart(2, '0') + ":" + String(ns).padStart(2, '0');
 }
-
 function fmtZman(t) {
     if (!t || t.includes("--")) return "--:--";
-    let cleanTime = t.replace(/(AM|PM|am|pm)/g, "").trim();
-    let p = cleanTime.split(':');
+    let c = t.replace(/(AM|PM|am|pm)/g, "").trim();
+    let p = c.split(':');
     return `${p[0]}:${p[1]}<span class="secs">:${p[2] || "00"}</span>`;
 }
-
-function getSec(tStr, isPM) {
-    if (!tStr || tStr.includes("--")) return 0;
-    let p = tStr.split(':'), h = parseInt(p[0]), m = parseInt(p[1]), s = parseInt(p[2]||0);
-    if (isPM && h < 12) h += 12;
+function getSec(t, pm) {
+    if (!t || t.includes("--")) return 0;
+    let p = t.split(':'), h = parseInt(p[0]), m = parseInt(p[1]), s = parseInt(p[2]||0);
+    if (pm && h < 12) h += 12;
     return (h * 3600) + (m * 60) + s;
 }
-
-function getIso(date) {
-    let y = date.getFullYear(), m = String(date.getMonth() + 1).padStart(2, '0'), d = String(date.getDate()).padStart(2, '0');
-    return `${y}-${m}-${d}`;
-}
-
-function fit(el, startVh) {
+function getIso(d) { return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,'0') + "-" + String(d.getDate()).padStart(2,'0'); }
+function fit(el, vhStart) {
     if (!el) return;
-    let p = el.parentElement; let vh = startVh; el.style.fontSize = vh + "vh";
-    while (p.scrollHeight > p.clientHeight && vh > 1.0) {
-        vh -= 0.1; el.style.fontSize = vh + "vh";
-    }
+    let p = el.parentElement; let vh = vhStart; el.style.fontSize = vh + "vh";
+    while (p.scrollHeight > p.clientHeight && vh > 1.0) { vh -= 0.1; el.style.fontSize = vh + "vh"; }
 }
-
 function updateClock() {
-    let now = new Date(), h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
-    $('CLOCK').innerHTML = (h % 12 || 12) + ":" + String(m).padStart(2, '0') + ":" + String(s).padStart(2, '0');
-    $('ENG_DATE').innerText = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    let n = new Date(); let h = n.getHours();
+    $('CLOCK').innerHTML = (h % 12 || 12) + ":" + String(n.getMinutes()).padStart(2,'0') + ":" + String(n.getSeconds()).padStart(2,'0');
+    $('ENG_DATE').innerText = n.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 }
-
 function loadWeather() {
     fetch("https://api.open-meteo.com/v1/forecast?latitude=40.598&longitude=-73.765&current_weather=true&temperature_unit=fahrenheit")
-    .then(r => r.json()).then(data => {
-        if(data && data.current_weather) $('WEATHER').innerText = " | " + Math.round(data.current_weather.temperature) + "°F";
-    });
+    .then(r => r.json()).then(d => { if(d.current_weather) $('WEATHER').innerText = " | " + Math.round(d.current_weather.temperature) + "°F"; });
 }
-
 function updateUI() {
-    let now = new Date(), h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
-    let cSec = (h * 3600) + (m * 60) + s, dayW = now.getDay(); 
-
-    let isoToday = getIso(now);
-    let dToday = schedule[isoToday];
-    if (!dToday) return;
-
-    let rtSecsRaw = getSec(dToday.z[10], true);
-    // RULES: Flip at Alos (Zman 1), Omer flip 25 mins before RT
-    let omerActiveIso = (cSec >= (rtSecsRaw - 1500)) ? getIso(new Date(now.getTime() + 86400000)) : isoToday;
-    let dateActiveIso = (cSec < getSec(dToday.z[0], false)) ? getIso(new Date(now.getTime() - 86400000)) : isoToday;
-
-    let dOmer = schedule[omerActiveIso] || dToday;
-    let dDate = schedule[dateActiveIso] || dToday;
-
-    if (dateActiveIso !== lastDateIso) {
-        lastDateIso = dateActiveIso;
+    let now = new Date(); let h = now.getHours(); let cSec = (h*3600) + (now.getMinutes()*60) + now.getSeconds();
+    let dToday = schedule[getIso(now)]; if (!dToday) return;
+    let rtSecs = getSec(dToday.z[10], true);
+    let oIso = (cSec >= (rtSecs - 1500)) ? getIso(new Date(now.getTime() + 86400000)) : getIso(now);
+    let dIso = (cSec < getSec(dToday.z[0], false)) ? getIso(new Date(now.getTime() - 86400000)) : getIso(now);
+    let dOmer = schedule[oIso] || dToday, dDate = schedule[dIso] || dToday;
+    if (dIso !== lastDateIso) {
+        lastDateIso = dIso;
         $('DAY_LABEL').innerText = DAY_MAP[dDate.day] || dDate.day;
         $('DATE_LABEL').innerText = dDate.heb;
         $('PARSHA_LABEL').innerText = dDate.parsha ? "פרשת " + dDate.parsha : "";
         for (let i=1; i<=11; i++) {
-            let baseT = dDate.z[i-1];
-            // Rule: RT (Zman 11) is +1 min
-            let displayT = (i === 11) ? shiftTime(baseT, 1) : baseT;
-            $('z'+i).innerHTML = fmtZman(displayT);
+            let bt = dDate.z[i-1];
+            $('z'+i).innerHTML = fmtZman((i === 11) ? shiftTime(bt, 1) : bt);
         }
     }
-
-    if (dayW === 5) {
+    if (now.getDay() === 5) {
         $('row_special').style.display = 'flex';
-        // Rule: Candles is -1 min
         $('z_spec_time').innerHTML = fmtZman(shiftTime(dToday.candle || dToday.z[9], -1));
     } else { $('row_special').style.display = 'none'; }
-
-    // This is the new logic for the Omer / Summer Message box
+    
+    // OMER / SUMMER FLIP
     if (dOmer.omerNum) {
-        // 1. Show the "Sefirat HaOmer" title
-        $('OMER').querySelector('div').style.display = 'block'; 
-        
-        let full = OMER_STRINGS[dOmer.omerNum] || dOmer.omerNum + " יום";
-        $('O2').innerText = "היום " + full + " לעומר";
+        $('OMER').querySelector('.omer-header').style.display = 'block'; 
+        $('O2').innerText = "היום " + (OMER_STRINGS[dOmer.omerNum] || dOmer.omerNum + " יום") + " לעומר";
         $('O_BECHINA').innerText = dOmer.bechina || "";
     } else {
-        // 2. Hide the title and show your Column F message
-        $('OMER').querySelector('div').style.display = 'none'; 
+        $('OMER').querySelector('.omer-header').style.display = 'none'; 
         $('O2').innerText = defaultSummerMsg; 
         $('O_BECHINA').innerText = ""; 
     }
+    fit($('O2'), 5.5); fit($('O_BECHINA'), 3.5);
 
-    // Keep these here so the text always fits the box perfectly
-    fit($('O2'), 5.5); 
-    fit($('O_BECHINA'), 3.5);
-
-    let tachReason = dDate.tachReason;
-    let isShab = (dayW === 5 && dToday.candle && cSec >= getSec(dToday.candle, true)) || (dayW === 6 && cSec < rtSecsRaw);
-    let isMotz = (dayW === 6 && cSec >= rtSecsRaw);
-
-    let head = isShab ? "שבת קודש" : (isMotz ? "מוצאי שבת" : (tachReason ? "אין אומרים תחנון" : "מוריד הטל"));
-    let sub = isShab ? "" : (isMotz ? "אתה חוננתנו" : (tachReason ? tachReason : "ותן ברכה"));
-    let cls = (isShab || isMotz || !tachReason) ? "gold-box" : "teal-box";
-
-    let statusHTML = `<div class="message-box ${cls}"><span id="status-head">${head}</span><span id="status-sub">${sub}</span></div>`;
-    if (statusHTML !== currentStatusHTML) { $('LEFT_MSG').innerHTML = statusHTML; currentStatusHTML = statusHTML; }
+    let tR = dDate.tachReason, dayW = now.getDay();
+    let isSh = (dayW===5 && dToday.candle && cSec >= getSec(dToday.candle,true)) || (dayW===6 && cSec < rtSecs);
+    let isMo = (dayW===6 && cSec >= rtSecs);
+    let head = isSh ? "שבת קודש" : (isMo ? "מוצאי שבת" : (tR ? "אין אומרים תחנון" : "מוריד הטל"));
+    let sub = isSh ? "" : (isMo ? "אתה חוננתנו" : (tR ? tR : "ותן ברכה"));
+    let cls = (isSh || isMo || !tR) ? "gold-box" : "teal-box";
+    let sH = `<div class="message-box ${cls}"><span id="status-head">${head}</span><span id="status-sub">${sub}</span></div>`;
+    if (sH !== currentStatusHTML) { $('LEFT_MSG').innerHTML = sH; currentStatusHTML = sH; }
 
     let currentZmanTimes = [];
     for(let i=1; i<=11; i++) currentZmanTimes.push({id: 'r'+i, sec: getSec(dDate.z[i-1], i>=7)});
@@ -291,15 +245,11 @@ function updateUI() {
         currentlyHighlightedId = tgtId;
     }
 }
-
 function loadData() {
     fetch(SCRIPT_URL + "?cb=" + new Date().getTime()).then(r => r.json()).then(d => {
         if (!d) return;
         schedule = d.schedule;
-        
-        // --- ADD THIS LINE ---
-        defaultSummerMsg = d.defaultMsg; 
-        
+        defaultSummerMsg = d.defaultMsg || "";
         $('ANN').innerText = d.announcements || ""; fit($('ANN'), 4.8);
         $('TEF').innerText = d.tefila || ""; fit($('TEF'), 4.8);
         if (d.p1) $('p1').src = "https://drive.google.com/thumbnail?id="+d.p1+"&sz=w1200";
@@ -307,11 +257,8 @@ function loadData() {
         if (d.p5) $('p5').src = "https://drive.google.com/thumbnail?id="+d.p5+"&sz=w1200";
     });
 }
-
-setInterval(updateClock, 1000); updateClock();
-loadWeather(); setInterval(loadWeather, 900000);
-loadData(); setInterval(loadData, 30000); 
-setInterval(updateUI, 1000);
+setInterval(updateClock, 1000); updateClock(); loadWeather(); setInterval(loadWeather, 900000);
+loadData(); setInterval(loadData, 30000); setInterval(updateUI, 1000);
 </script>
 </body>
 </html>
