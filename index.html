@@ -37,7 +37,9 @@
     white-space: nowrap;
     letter-spacing: -3px;
   }
-  
+  #p1 {
+    transition: opacity 0.8s ease-in-out;
+  }
   .left-stack { flex: 1.2; display: flex; align-items: stretch; justify-content: stretch; }
   .message-box { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-weight: bold; border-radius: 10px; padding: 0; border: none !important; }
   .teal-box { background: #004d40; color: #00bfa5; } 
@@ -120,7 +122,6 @@
     </div>
   </div>
 </div>
-
 <script>
 /**
  * THE BAYSWATER PROTOCOL - MASTER RULES
@@ -137,18 +138,18 @@
  * - Motzaei Shabbat: At RT (72) on Saturday.
  * - Tachanun: Teal box + Reason.
  * - Default: "מוריד הטל / ותן ברכה".
- * - After Omer looks for clm F for txt.
- * - Looks for moled in clm Y to trigger "Mevarchim Mode" (Top Box & Omer Box takeover).
  */
 
 const $ = id => document.getElementById(id);
-var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyDmRrmvNQ772ghK_qWLOjS0XMeu3eEe5AR_0SXHzitgfMh1egEgqtQguy-LTiiUdVpnA/exec"; 
+var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyjNSAvH290v-6SFkXHJfFHAr8Kh4UlmZxAIQf7-PFFFHWTNOkYDGTggyPz130gG6_Low/exec"; 
 
 var defaultSummerMsg = ""; 
+var p1Images = [];
+var p1Index = 0;
 
 const OMER_STRINGS = {
   1:"יום אחד", 2:"שני ימים", 3:"שלשה ימים", 4:"ארבעה ימים", 5:"חמשה ימים", 6:"ששה ימים", 7:"שבוע אחד",
-  8:"שמונה ימים שהם שבוע אחד ויום אחד", 9:"תשעה ימים שהם שבוע אחד ושני ימים", 10:"עשרה ימים שהם שבוע אחד ושלשה ימים",
+  8:"שמונה ימים שהם שבוע אחד ויום אחד", 9:"תשעה ימים שהם שבוע אחד ושני ימים", 10:"עשרה ימים שהם שבוע אחד וששלשה ימים",
   11:"אחד עשר יום שהם שבוע אחד וארבעה ימים", 12:"שנים עשר יום שהם שבוע אחד וחמשה ימים", 13:"שלשה עשר יום שהם שבוע אחד וששה ימים", 14:"ארבעה עשר יום שהם שני שבועות",
   15:"חמשה עשר יום שהם שני שבועות ויום אחד", 16:"ששה עשר יום שהם שני שבועות ושני ימים", 17:"שבעה עשר יום שהם שני שבועות ושלשה ימים", 18:"שמונה עשר יום שהם שני שבועות וארבעה ימים", 19:"תשעה עשר יום שהם שני שבועות וחמשה ימים", 20:"עשרים יום שהם שני שבועות וששה ימים", 21:"אחד ועשרים יום שהם שלשה שבועות",
   22:"שנים ועשרים יום שהם שלשה שבועות ויום אחד", 23:"שלשה ועשרים יום שהם שלשה שבועות ושני ימים", 24:"ארבעה ועשרים יום שהם שלשה שבועות ושלשה ימים", 25:"חמשה ועשרים יום שהם שלשה שבועות וארבעה ימים", 26:"ששה ועשרים יום שהם שלשה שבועות וחמשה ימים", 27:"שבעה ועשרים יום שהם שלשה שבועות וששה ימים", 28:"שמונה ועשרים יום שהם ארבעה שבועות",
@@ -194,6 +195,17 @@ function loadWeather() {
     fetch("https://api.open-meteo.com/v1/forecast?latitude=40.598&longitude=-73.765&current_weather=true&temperature_unit=fahrenheit")
     .then(r => r.json()).then(d => { if(d.current_weather) $('WEATHER').innerText = " | " + Math.round(d.current_weather.temperature) + "°F"; });
 }
+
+function rotateP1() {
+    if (p1Images.length === 0) return;
+    $('p1').style.opacity = 0;
+    setTimeout(() => {
+        $('p1').src = "https://drive.google.com/thumbnail?id=" + p1Images[p1Index] + "&sz=w1200";
+        $('p1').style.opacity = 1;
+        p1Index = (p1Index + 1) % p1Images.length;
+    }, 800); 
+}
+
 function updateUI() {
     let now = new Date(); let h = now.getHours(); let cSec = (h*3600) + (now.getMinutes()*60) + now.getSeconds();
     let dToday = schedule[getIso(now)]; if (!dToday) return;
@@ -218,17 +230,14 @@ function updateUI() {
         $('z_spec_time').innerHTML = fmtZman(shiftTime(dToday.candle || dToday.z[9], -1));
     } else { $('row_special').style.display = 'none'; }
     
-   // --- THE BATTLE FOR THE BOTTOM BOX (OMER / MOLED / SUMMER) ---
     let moledInfo = dDate.moled || "";
-    let isMoledTime = (cSec >= 32400 && cSec <= 45000); // 9:00 AM to 12:30 PM
+    let isMoledTime = (cSec >= 32400 && cSec <= 45000); 
 
     if (moledInfo && isMoledTime) {
-        // 1. MOLED MODE - No header, just centered Moled time
         $('OMER').querySelector('.omer-header').style.display = 'none';
         $('O2').innerText = moledInfo;
         $('O_BECHINA').style.display = 'none';
     } else if (dOmer.omerNum) {
-        // 2. OMER MODE - Header stays for the count
         $('OMER').querySelector('.omer-header').style.display = 'block';
         $('OMER').querySelector('.omer-header').innerText = "ספירת העומר";
         $('OMER').querySelector('.omer-header').style.color = "#ccc";
@@ -238,7 +247,6 @@ function updateUI() {
             $('O_BECHINA').style.display = 'block';
         } else { $('O_BECHINA').style.display = 'none'; }
     } else {
-        // 3. SUMMER MODE
         $('OMER').querySelector('.omer-header').style.display = 'none';
         $('O_BECHINA').style.display = 'none';
         $('O2').innerText = defaultSummerMsg;
@@ -247,7 +255,6 @@ function updateUI() {
     fit($('O2'), 5.5);
     fit($('O_BECHINA'), 3.5);
 
-    // --- STATUS BOX LOGIC (MEVARCHIM / TACHANUN) ---
     let tR = dDate.tachReason, dayW = now.getDay();
     let isShab = (dayW===5 && dToday.candle && cSec >= getSec(dToday.candle,true)) || (dayW===6 && cSec < rtSecs);
     let isMotz = (dayW===6 && cSec >= rtSecs);
@@ -284,20 +291,27 @@ function updateUI() {
         currentlyHighlightedId = tgtId;
     }
 }
+
 function loadData() {
     fetch(SCRIPT_URL + "?cb=" + new Date().getTime()).then(r => r.json()).then(d => {
         if (!d) return;
         schedule = d.schedule;
         defaultSummerMsg = d.defaultMsg || "";
+        p1Images = d.p1List || [];
+        if (p1Images.length > 0 && !$('p1').src) { rotateP1(); }
         $('ANN').innerText = d.announcements || ""; fit($('ANN'), 4.8);
         $('TEF').innerText = d.tefila || ""; fit($('TEF'), 4.8);
-        if (d.p1) $('p1').src = "https://drive.google.com/thumbnail?id="+d.p1+"&sz=w1200";
         if (d.p4) $('p4').src = "https://drive.google.com/thumbnail?id="+d.p4+"&sz=w1200";
         if (d.p5) $('p5').src = "https://drive.google.com/thumbnail?id="+d.p5+"&sz=w1200";
     });
 }
-setInterval(updateClock, 1000); updateClock(); loadWeather(); setInterval(loadWeather, 900000);
-loadData(); setInterval(loadData, 30000); setInterval(updateUI, 1000);
+
+setInterval(updateClock, 1000); 
+updateClock(); 
+loadWeather(); 
+setInterval(loadWeather, 900000);
+loadData(); 
+setInterval(loadData, 30000); 
+setInterval(updateUI, 1000);
+setInterval(rotateP1, 8000);
 </script>
-</body>
-</html>
