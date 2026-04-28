@@ -257,8 +257,11 @@ function updateUI() {
     }
     fit($('O2'), 5.5); fit($('O_BECHINA'), 3.8);
 
- // --- 6. STATUS BOX (Top Left) ---
-    let tR = dDate.tachReason; // This is Column Z (Manual Note)
+// --- 6. STATUS BOX (Top Left) ---
+    // Using .trim() to ignore accidental spaces in the spreadsheet
+    let tR = (dDate.tachReason || "").trim(); 
+    let hText = (holidayText || "").trim();
+    
     let dayW = now.getDay();
     let isShab = (dayW===5 && dToday.candle && cSec >= getSec(dToday.candle,true)) || (dayW===6 && cSec < rtSecs);
     let isMotz = (dayW===6 && cSec >= rtSecs);
@@ -267,32 +270,30 @@ function updateUI() {
     let sub = "";
 
     if (isShab) {
-        // PRIORITY 1: SHABBOS
         head = (moledText && isMoledTime) ? "שבת מברכים" : "שבת קודש";
-        sub = holidayText; // Shows Column D info on Shabbos
-    } else if (holidayText !== "") { 
-        // PRIORITY 2: HOLIDAY (Column D)
-        head = holidayText; 
-        // If it's Saturday Night Yom Tov, show Vatodi'einu. 
-        // Otherwise, ONLY show what you typed in Column Z (tR).
+        sub = hText; 
+    } else if (hText !== "") { 
+        head = hText; 
         sub = isMotz ? "ותודיענו" : tR; 
     } else if (isMotz) {
-        // PRIORITY 3: MOTZEI SHABBOS
         head = "מוצאי שבת";
         sub = "אתה חוננתנו";
     } else if (tR !== "") {
-        // PRIORITY 4: MANUAL NO-TACHANUN (Column Z has text)
+        // Only goes Teal if there is an actual reason in the sheet
         head = "אין אומרים תחנון";
         sub = tR;
     } else {
-        // DEFAULT: WEEKDAY
+        // BACK TO GOLD
         head = "מוריד הטל";
         sub = "ותן ברכה";
     }
     
-    // Teal color if it's a Holiday OR if you typed a reason in Column Z
-    let cls = (isShab || isMotz || (holidayText === "" && tR === "")) ? "gold-box" : "teal-box";
-    if (holidayText !== "" || tR !== "") cls = "teal-box"; 
+    // THE GOLD/TEAL SWITCH
+    // If it's Shabbat, Motzei, or everything is empty, stay Gold.
+    let cls = "gold-box";
+    if (!isShab && !isMotz && (hText !== "" || tR !== "")) {
+        cls = "teal-box";
+    }
 
     let sH = `<div class="message-box ${cls}"><span id="status-head">${head}</span><span id="status-sub">${sub}</span></div>`;
     
@@ -302,7 +303,6 @@ function updateUI() {
         fit($('status-head'), 6.0); 
         fit($('status-sub'), 3.0);
     }
-
     let currentZmanTimes = [];
     for(let i=1; i<=11; i++) currentZmanTimes.push({id: 'r'+i, sec: getSec(dDate.z[i-1], i>=7)});
     let nIdx = currentZmanTimes.findIndex(z => z.sec > cSec), tgtId = nIdx !== -1 ? currentZmanTimes[nIdx].id : null;
