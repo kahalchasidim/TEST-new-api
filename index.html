@@ -31,18 +31,20 @@
   #DAY_LABEL, #DATE_LABEL, #PARSHA_LABEL { font-size: 5.8vh; line-height: 0.9; white-space: nowrap; padding: 0; margin: 0; }
 
   .main-clock { 
-    flex: 1.8; /* Expanded from 1.4 to stop the digits from cutting */
+    flex: 1.8; 
     display: flex; 
     align-items: center; 
     justify-content: center; 
-    font-size: 21vh; /* Bumped back to 21vh for a bold look */
+    font-size: 21vh; 
     font-weight: 800;
-    /* Widened the scale to 0.85 so it looks natural in the bigger box */
     transform: translateY(-0.8vh) scaleX(0.85); 
     font-family: 'Assistant', sans-serif; 
     transform-origin: center;
     letter-spacing: -4px; 
     width: 100%;
+
+    /* --- ADD THIS LINE BELOW --- */
+    font-variant-numeric: tabular-nums; 
   }
   #p1 {
     transition: opacity 1.0s ease-in-out;
