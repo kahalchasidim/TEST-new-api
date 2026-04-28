@@ -20,7 +20,7 @@
   
   .clock-section { height: 18vh; display: flex; align-items: stretch; justify-content: space-between; border: 2px solid var(--gold); border-radius: 12px; background: #050505; padding: 0; }
   
-  .status-stack { flex: 1.0; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #050505; }
+  .status-stack { flex: 1.2; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #050505; }
   #DAY_LABEL, #DATE_LABEL, #PARSHA_LABEL { font-size: 5.8vh; line-height: 0.9; white-space: nowrap; padding: 0; margin: 0; }
 
   .main-clock { 
@@ -30,7 +30,7 @@
   }
   .c-unit { display: inline-block; width: 1.4em; text-align: center; }
   
-  .left-stack { flex: 1.0; display: flex; align-items: stretch; justify-content: stretch; }
+  .left-stack { flex: 1.2; display: flex; align-items: stretch; justify-content: stretch; }
   .message-box { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0px 8px; }
 
   .teal-box { background: #004d40; color: #00bfa5; } 
@@ -258,7 +258,7 @@ function updateUI() {
     fit($('O2'), 5.5); fit($('O_BECHINA'), 3.8);
 
  // --- 6. STATUS BOX (Top Left) ---
-    let tR = dDate.tachReason; 
+    let tR = dDate.tachReason; // This is Column Z (Manual Note)
     let dayW = now.getDay();
     let isShab = (dayW===5 && dToday.candle && cSec >= getSec(dToday.candle,true)) || (dayW===6 && cSec < rtSecs);
     let isMotz = (dayW===6 && cSec >= rtSecs);
@@ -267,28 +267,32 @@ function updateUI() {
     let sub = "";
 
     if (isShab) {
+        // PRIORITY 1: SHABBOS
         head = (moledText && isMoledTime) ? "שבת מברכים" : "שבת קודש";
-        sub = dDate.rcInfo || "";
+        sub = holidayText; // Shows Column D info on Shabbos
     } else if (holidayText !== "") { 
-        // --- PRIORITY 1: HOLIDAY ---
+        // PRIORITY 2: HOLIDAY (Column D)
         head = holidayText; 
-        // If it's Saturday Night AND Yom Tov, remind them about Vatodi'einu!
-        // Otherwise, just say No Tachanun.
-        sub = isMotz ? "ותודיענו / א\"א תחנון" : "אין אומרים תחנון";
+        // If it's Saturday Night Yom Tov, show Vatodi'einu. 
+        // Otherwise, ONLY show what you typed in Column Z (tR).
+        sub = isMotz ? "ותודיענו" : tR; 
     } else if (isMotz) {
-        // --- PRIORITY 2: STANDARD MOTZEI SHABBOS ---
+        // PRIORITY 3: MOTZEI SHABBOS
         head = "מוצאי שבת";
         sub = "אתה חוננתנו";
-    } else if (tR) {
+    } else if (tR !== "") {
+        // PRIORITY 4: MANUAL NO-TACHANUN (Column Z has text)
         head = "אין אומרים תחנון";
         sub = tR;
     } else {
+        // DEFAULT: WEEKDAY
         head = "מוריד הטל";
         sub = "ותן ברכה";
     }
     
-    let cls = (isShab || isMotz || (holidayText === "" && !tR)) ? "gold-box" : "teal-box";
-    if (holidayText !== "") cls = "teal-box"; 
+    // Teal color if it's a Holiday OR if you typed a reason in Column Z
+    let cls = (isShab || isMotz || (holidayText === "" && tR === "")) ? "gold-box" : "teal-box";
+    if (holidayText !== "" || tR !== "") cls = "teal-box"; 
 
     let sH = `<div class="message-box ${cls}"><span id="status-head">${head}</span><span id="status-sub">${sub}</span></div>`;
     
