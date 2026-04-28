@@ -253,7 +253,7 @@ function updateUI() {
         $('O_BECHINA').style.display = 'none';
     } else if (omerKey) {
         // 2. OMER MODE
-        $('O2').innerText = "היום שמונה ושלשים יום שהם חמשה שבועות ושלשה ימים לעומר";
+        $('O2').innerText = "היום " + (OMER_STRINGS[omerKey] || omerKey + " יום") + " לעומר";
         if (dOmer.bechina && dOmer.bechina.trim() !== "") {
             $('O_BECHINA').innerText = dOmer.bechina;
             $('O_BECHINA').style.display = 'block';
