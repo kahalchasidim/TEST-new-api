@@ -21,41 +21,60 @@
   .clock-section { height: 18vh; display: flex; align-items: stretch; justify-content: space-between; border: 2px solid var(--gold); border-radius: 12px; background: #050505; padding: 0; }
   
   .status-stack { 
-    flex: 0.9; /* Shrunk from 1.1 */
+    flex: 1.1; /* Increased from 0.9 */
     display: flex; 
     flex-direction: column; 
     justify-content: center; 
     align-items: center; 
     padding: 0; 
-    gap: 2px; 
   }
   #DAY_LABEL, #DATE_LABEL, #PARSHA_LABEL { font-size: 5.8vh; line-height: 0.9; white-space: nowrap; padding: 0; margin: 0; }
 
   .main-clock { 
-    flex: 2.1; /* Expanded from 1.6 - This is the major win */
+    flex: 1.8; /* Reduced from 2.1 to close the "gap" */
     display: flex; 
     align-items: center; 
-    justify-content: center;
-    font-size: 21vh;             /* Back up to a massive 21vh */
-    line-height: 0.8;
-    font-weight: 800;
-    font-family: 'Assistant', sans-serif;
-    transform: translateY(-0.8vh) scaleX(0.85); /* Much wider/natural look! */
+    justify-content: center; 
+    font-size: 21vh; 
+    font-weight: 800; 
+    font-family: 'Assistant', sans-serif; 
+    transform: translateY(-0.8vh) scaleX(0.82); /* Kept wide and natural */
     transform-origin: center;
     white-space: nowrap;
-    letter-spacing: -4px;        /* Tight enough to look sharp, but not cramped */
-    width: 100%;
+    letter-spacing: -4px;
   }
   #p1 {
     transition: opacity 1.0s ease-in-out;
   }
   .left-stack { 
-    flex: 0.9; /* Shrunk from 1.2 */
+    flex: 1.1; /* Increased from 0.9 to fix the Tachanun cutoff */
     display: flex; 
     align-items: stretch; 
     justify-content: stretch; 
   }
-  .message-box { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-weight: bold; border-radius: 10px; padding: 0; border: none !important; }
+  .message-box { 
+    width: 100%; 
+    height: 100%; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+    text-align: center; 
+    font-weight: bold; 
+    border-radius: 10px; 
+    padding: 5px; /* Added padding so text doesn't touch the edges */
+  }
+
+  /* This ensures the Tachanun reason can use two lines if needed */
+  #status-sub { 
+    font-size: 4vh; 
+    color: white; 
+    display: block; 
+    margin-top: 2px; 
+    width: 95%; 
+    white-space: normal; /* Allows wrapping */
+    line-height: 1.0; 
+  }
   .teal-box { background: #004d40; color: #00bfa5; } 
   .gold-box { color: var(--gold); background: #050505; }
   #status-head { font-size: 8.5vh; line-height: 1; display: block; }
