@@ -63,7 +63,9 @@
   .img-box img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; }
   
   .omer-box { flex: 1.3; border: 2px solid var(--gold); border-radius: 10px; background: #001f1a; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0; text-align: center; }
-  .omer-header { font-size: 2.2vh; color: #ccc; margin-bottom: -5px; }
+  .omer-header { 
+    display: none !important; /* This kills the header for good */
+  }
   #O2 { color: var(--gold); font-weight: 800; font-size: 4.2vh; line-height: 1.1; width: 92%; display: block; margin: 0 auto; }
   #O_BECHINA { font-size: 3.5vh; color: #fff; border-top: 1px solid #444; padding-top: 2px; margin-top: 6px; width: 90%; }
   .secs { font-size: 0.75em; opacity: 0.6; font-weight: 400; margin-left: 1px; }
@@ -233,25 +235,25 @@ function updateUI() {
     let moledInfo = dDate.moled || "";
     let isMoledTime = (cSec >= 32400 && cSec <= 45000); 
 
+// --- THE BATTLE FOR THE BOTTOM BOX (CLEAN VERSION) ---
+    let omerKey = dOmer.omerNum ? String(dOmer.omerNum).trim() : null;
+
     if (moledInfo && isMoledTime) {
-        $('OMER').querySelector('.omer-header').style.display = 'none';
+        // 1. MOLED MODE
         $('O2').innerText = moledInfo;
         $('O_BECHINA').style.display = 'none';
-    } else if (dOmer.omerNum) {
-        $('OMER').querySelector('.omer-header').style.display = 'block';
-        $('OMER').querySelector('.omer-header').innerText = "ספירת העומר";
-        $('OMER').querySelector('.omer-header').style.color = "#ccc";
-        $('O2').innerText = "היום " + (OMER_STRINGS[dOmer.omerNum] || dOmer.omerNum + " יום") + " לעומר";
+    } else if (omerKey) {
+        // 2. OMER MODE
+        $('O2').innerText = "היום " + (OMER_STRINGS[omerKey] || omerKey + " יום") + " לעומר";
         if (dOmer.bechina && dOmer.bechina.trim() !== "") {
             $('O_BECHINA').innerText = dOmer.bechina;
             $('O_BECHINA').style.display = 'block';
         } else { $('O_BECHINA').style.display = 'none'; }
     } else {
-        $('OMER').querySelector('.omer-header').style.display = 'none';
+        // 3. SUMMER MODE
         $('O_BECHINA').style.display = 'none';
         $('O2').innerText = defaultSummerMsg;
     }
-
     fit($('O2'), 5.5);
     fit($('O_BECHINA'), 3.5);
 
