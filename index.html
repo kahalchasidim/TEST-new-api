@@ -34,25 +34,28 @@
 @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@400;700;800&family=Suez+One&display=swap');
 
 .main-clock { 
-    flex: 1.6; /* Balanced size to hug the digits and close the gap */
+    flex: 2.0; 
     display: flex; 
     align-items: center; 
     justify-content: center; 
-    direction: ltr !important; /* THE FIX: Forces time to read correctly! */
-    font-size: 20vh; 
+    direction: ltr !important; 
+    /* Dropped from 21vh to 15.5vh so it fits inside the 18vh container */
+    font-size: 15.5vh; 
     font-weight: 800;
     font-family: 'Assistant', sans-serif; 
-    transform: translateY(-0.8vh) scaleX(0.82); 
+    /* Scale back to a natural 0.85 since we have more width now */
+    transform: translateY(0) scaleX(0.85); 
     transform-origin: center;
     width: 100%;
+    overflow: visible; /* Ensures no shadows or edges get clipped */
   }
 
-/* 2. This is the "Parking Spot" for each number set */
-.c-unit {
-  display: inline-block;
-  width: 1.25em; /* Exactly enough room for two digits */
-  text-align: center;
-}
+  .c-unit {
+    display: inline-block;
+    /* Widened from 1.25em to 1.4em to ensure wide numbers like '0' and '8' don't cut */
+    width: 1.4em; 
+    text-align: center;
+  }
 .left-stack { 
     flex: 1.2; /* Increased room for Tachanun text */
     display: flex; 
@@ -355,15 +358,14 @@ function updateUI() {
     let cls = (isShab || isMotz || !tR) ? "gold-box" : "teal-box";
     let sH = `<div class="message-box ${cls}"><span id="status-head">${head}</span><span id="status-sub">${sub}</span></div>`;
     
-   if (sH !== currentStatusHTML) { 
+  if (sH !== currentStatusHTML) { 
         $('LEFT_MSG').innerHTML = sH; 
         currentStatusHTML = sH; 
         
-        // --- UPDATED BASELINES ---
-        // Start Tachanun text slightly smaller to ensure it clears the narrower walls
-    // --- NEW SAFETY BASELINES ---
-        fit($('status-head'), 6.2); 
-        fit($('status-sub'), 3.2);
+        // --- NEW SAFETY BASELINES ---
+        // Lowered to ensure they sit centered in the 18vh height
+        fit($('status-head'), 5.5); 
+        fit($('status-sub'), 2.8);
     }
     let currentZmanTimes = [];
     for(let i=1; i<=11; i++) currentZmanTimes.push({id: 'r'+i, sec: getSec(dDate.z[i-1], i>=7)});
