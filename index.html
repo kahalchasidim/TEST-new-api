@@ -70,10 +70,11 @@
   #O2 { 
     color: var(--gold); 
     font-weight: 800; 
-    line-height: 1.0; /* Back to a clean 1.0 */
-    width: 94%; /* Slightly narrower for better margins */
+    line-height: 1.0; /* Back to a standard clean line height */
+    width: 94%;       /* 3% margin on each side for a clean 'framed' look */
     display: block; 
     margin: 0 auto; 
+    word-wrap: break-word; /* Essential for long Omer counts */
   }
   #O_BECHINA { font-size: 3.5vh; color: #fff; border-top: 1px solid #444; padding-top: 2px; margin-top: 6px; width: 90%; }
   .secs { font-size: 0.75em; opacity: 0.6; font-weight: 400; margin-left: 1px; }
@@ -262,10 +263,12 @@ function updateUI() {
         $('O_BECHINA').style.display = 'none';
         $('O2').innerText = defaultSummerMsg;
     }
- // Start at 6.0 - Big and bold, but not "way too big"
+ // --- THE GOLDILOCKS FIT ---
+    // We start at 6.0vh. If it fits, it stays. 
+    // If it hits the walls, it shrinks until it clears.
     fit($('O2'), 6.0); 
 
-    // Start at 3.8
+    // Bechina text starts slightly smaller to stay subordinate
     fit($('O_BECHINA'), 3.8);
 
     let tR = dDate.tachReason, dayW = now.getDay();
