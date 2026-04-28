@@ -253,7 +253,7 @@ function updateUI() {
         $('O_BECHINA').style.display = 'none';
     } else if (omerKey) {
         // 2. OMER MODE
-        $('O2').innerText = "היום " + (OMER_STRINGS[omerKey] || omerKey + " יום") + " לעומר";
+        $('O2').innerText = "היום שמונה ושלשים יום שהם חמשה שבועות ושלשה ימים לעומר";
         if (dOmer.bechina && dOmer.bechina.trim() !== "") {
             $('O_BECHINA').innerText = dOmer.bechina;
             $('O_BECHINA').style.display = 'block';
@@ -266,7 +266,7 @@ function updateUI() {
  // --- THE GOLDILOCKS FIT ---
     // We start at 6.0vh. If it fits, it stays. 
     // If it hits the walls, it shrinks until it clears.
-    fit($('O2'), 6.0); 
+    fit($('O2'), 5.5); 
 
     // Bechina text starts slightly smaller to stay subordinate
     fit($('O_BECHINA'), 3.8);
