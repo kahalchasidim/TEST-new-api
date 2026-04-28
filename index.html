@@ -21,7 +21,7 @@
   .clock-section { height: 18vh; display: flex; align-items: stretch; justify-content: space-between; border: 2px solid var(--gold); border-radius: 12px; background: #050505; padding: 0; }
   
  .status-stack { 
-    flex: 1.1; /* Reduced from 1.3 to give room to the center */
+    flex: 1.3; /* Increased from 1.1 to give the Date/Parsha room */
     display: flex; 
     flex-direction: column; 
     justify-content: center; 
@@ -31,24 +31,23 @@
   #DAY_LABEL, #DATE_LABEL, #PARSHA_LABEL { font-size: 5.8vh; line-height: 0.9; white-space: nowrap; padding: 0; margin: 0; }
 
   .main-clock { 
-    flex: 1.8; /* Increased from 1.4 - This makes the clock box significantly wider */
+    flex: 1.4; /* Shrunk from 1.8 - This pulls the side boxes in tight to the clock */
     display: flex; 
     align-items: center; 
     justify-content: center; 
-    font-size: 21vh; /* Restored to 21vh for maximum impact */
+    font-size: 20vh; /* Dropped slightly from 21 to ensure it never hits the new closer walls */
     font-weight: 800;
-    /* Increased scaleX to 0.85 so the numbers look bold and natural in the wider space */
-    transform: translateY(-0.8vh) scaleX(0.85); 
+    transform: translateY(-0.8vh) scaleX(0.82); /* Natural, bold look */
     font-family: 'Assistant', sans-serif; 
     transform-origin: center;
-    letter-spacing: -4px; /* Slightly relaxed spacing to fill the width */
+    letter-spacing: -5px; 
     width: 100%;
   }
   #p1 {
     transition: opacity 1.0s ease-in-out;
   }
 .left-stack { 
-    flex: 1.1; /* Reduced from 1.3 to give room to the center */
+    flex: 1.3; /* Increased from 1.1 - This gives Tachanun the room it needs */
     display: flex; 
     align-items: stretch; 
     justify-content: stretch; 
@@ -61,24 +60,23 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 2px 10px; /* More side padding, less top/bottom */
+    padding: 0px 8px; /* Minimal padding to maximize text space */
   }
 
   /* This ensures the Tachanun reason can use two lines if needed */
   #status-sub { 
-    font-size: 4vh; 
+    font-size: 3.2vh; /* Lowered from 3.5vh to stop the bottom cutoff */
     color: white; 
     display: block; 
-    margin-top: 2px; 
-    width: 95%; 
-    white-space: normal; /* Allows wrapping */
-    line-height: 1.0; 
+    width: 100%;
+    white-space: normal; 
+    line-height: 0.95; /* Tighter lines to fit more text vertically */
   }
   .teal-box { background: #004d40; color: #00bfa5; } 
   .gold-box { color: var(--gold); background: #050505; }
   #status-head { 
-    font-size: 7vh; /* Dropped from 8.5vh to prevent top cutoff */
-    line-height: 1.1; 
+    font-size: 6.5vh; /* Lowered from 7vh to stop the top cutoff */
+    line-height: 1.0; 
     display: block; 
     width: 100%;
   }
@@ -341,13 +339,14 @@ function updateUI() {
     let cls = (isShab || isMotz || !tR) ? "gold-box" : "teal-box";
     let sH = `<div class="message-box ${cls}"><span id="status-head">${head}</span><span id="status-sub">${sub}</span></div>`;
     
-    if (sH !== currentStatusHTML) { 
+   if (sH !== currentStatusHTML) { 
         $('LEFT_MSG').innerHTML = sH; 
         currentStatusHTML = sH; 
         
-        // --- ADD THESE TWO LINES TO AUTO-FIT THE STATUS BOX ---
-        fit($('status-head'), 7.0); 
-        fit($('status-sub'), 3.5);
+        // --- UPDATED BASELINES ---
+        // We start smaller so it has "room to grow" into the box
+        fit($('status-head'), 6.5); 
+        fit($('status-sub'), 3.2);
     }
     let currentZmanTimes = [];
     for(let i=1; i<=11; i++) currentZmanTimes.push({id: 'r'+i, sec: getSec(dDate.z[i-1], i>=7)});
