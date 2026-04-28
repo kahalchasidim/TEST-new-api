@@ -20,86 +20,23 @@
   
   .clock-section { height: 18vh; display: flex; align-items: stretch; justify-content: space-between; border: 2px solid var(--gold); border-radius: 12px; background: #050505; padding: 0; }
   
- .status-stack { 
-    flex: 1.2; /* Increased room for Date/Parsha */
-    display: flex; 
-    flex-direction: column; 
-    justify-content: center; 
-    align-items: center;
-    background: #050505; 
-  }
+  .status-stack { flex: 1.0; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #050505; }
   #DAY_LABEL, #DATE_LABEL, #PARSHA_LABEL { font-size: 5.8vh; line-height: 0.9; white-space: nowrap; padding: 0; margin: 0; }
 
- /* 1. Back to the clean Assistant font */
-@import url('https://fonts.googleapis.com/css2?family=Assistant:wght@400;700;800&family=Suez+One&display=swap');
+  .main-clock { 
+    flex: 2.0; display: flex; align-items: center; justify-content: center; 
+    direction: ltr !important; font-size: 15.5vh; font-weight: 800; font-family: 'Assistant', sans-serif; 
+    transform: translateY(-0.8vh) scale(0.82, 1.25); transform-origin: center; width: 100%; overflow: visible;
+  }
+  .c-unit { display: inline-block; width: 1.4em; text-align: center; }
+  
+  .left-stack { flex: 1.0; display: flex; align-items: stretch; justify-content: stretch; }
+  .message-box { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0px 8px; }
 
-.main-clock { 
-    flex: 2.0; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    direction: ltr !important; 
-    font-size: 15.5vh; 
-    font-weight: 800;
-    font-family: 'Assistant', sans-serif; 
-    
-    /* --- THE FINAL STRETCH --- */
-    /* scaleY at 1.25 makes it look significantly taller */
-    /* translateY(-0.8vh) lifts it slightly to keep it perfectly centered */
-    transform: translateY(-0.8vh) scale(0.82, 1.25); 
-    
-    transform-origin: center;
-    width: 100%;
-    overflow: visible;
-  }
-  .c-unit {
-    display: inline-block;
-    /* Widened from 1.25em to 1.4em to ensure wide numbers like '0' and '8' don't cut */
-    width: 1.4em; 
-    text-align: center;
-  }
-.left-stack { 
-    flex: 1.2; /* Increased room for Tachanun text */
-    display: flex; 
-    align-items: stretch; 
-    justify-content: stretch; 
-  }
-  .message-box {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 0px 8px; /* Minimal padding to maximize text space */
-  }
-
-  /* This ensures the Tachanun reason can use two lines if needed */
-  #status-sub { 
-    font-size: 3.2vh; /* Lowered from 3.5vh to stop the bottom cutoff */
-    color: white; 
-    display: block; 
-    width: 100%;
-    white-space: normal; 
-    line-height: 0.95; /* Tighter lines to fit more text vertically */
-  }
   .teal-box { background: #004d40; color: #00bfa5; } 
   .gold-box { color: var(--gold); background: #050505; }
-  #status-head { 
-    font-size: 6.2vh; /* Slightly smaller to stop the top cutoff */
-    line-height: 1.0; 
-    display: block; 
-    width: 100%;
-  }
-  #status-sub { 
-    font-size: 3.2vh; 
-    color: white; 
-    display: block; 
-    width: 100%;
-    white-space: normal; 
-    line-height: 0.9; /* Tightened to stop the bottom cutoff */
-  }
+  #status-head { font-size: 6.2vh; line-height: 1.0; display: block; width: 100%; }
+  #status-sub { font-size: 3.2vh; color: white; display: block; width: 100%; white-space: normal; line-height: 0.9; }
 
   .main-body { height: 71vh; display: flex; gap: 10px; }
   .zemanim-col { width: 21vw; border: 2px solid var(--gold); border-radius: 10px; display: flex; flex-direction: column; padding: 2px; background: #050505; }
@@ -117,24 +54,17 @@
   .img-box img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; }
   
   .omer-box { flex: 1.3; border: 2px solid var(--gold); border-radius: 10px; background: #001f1a; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0; text-align: center; }
- .omer-header { 
-    display: none! important; 
-  }
-
-  #O2 { 
-    color: var(--gold); 
-    font-weight: 800; 
-    line-height: 1.0; /* Back to a standard clean line height */
-    width: 94%;       /* 3% margin on each side for a clean 'framed' look */
-    display: block; 
-    margin: 0 auto; 
-    word-wrap: break-word; /* Essential for long Omer counts */
-  }
+  #O2 { color: var(--gold); font-weight: 800; line-height: 1.0; width: 94%; display: block; margin: 0 auto; word-wrap: break-word; }
   #O_BECHINA { font-size: 3.5vh; color: #fff; border-top: 1px solid #444; padding-top: 2px; margin-top: 6px; width: 90%; }
   .secs { font-size: 0.75em; opacity: 0.6; font-weight: 400; margin-left: 1px; }
+
+  #SLEEP_OVERLAY { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: black; z-index: 10000; display: none; }
+  #SLEEP_CLOCK { position: absolute; color: #444; font-family: 'Assistant', sans-serif; font-size: 8vh; font-weight: 700; transition: all 2.0s ease-in-out; white-space: nowrap; }
 </style>
 </head>
 <body>
+
+<div id="SLEEP_OVERLAY"><div id="SLEEP_CLOCK">00:00:00</div></div>
 
 <div class="master-frame">
   <div class="branding-bar">
@@ -178,7 +108,6 @@
       <div style="height:48%; display:flex; gap:10px;">
           <div class="img-box" style="flex:1.4;"><img id="p4" src=""></div>
           <div class="omer-box" id="OMER">
-              <div class="omer-header">ספירת העומר</div>
               <span id="O2"></span>
               <div id="O_BECHINA"></div>
           </div>
@@ -187,43 +116,29 @@
     </div>
   </div>
 </div>
+
 <script>
 /**
  * THE BAYSWATER PROTOCOL - MASTER RULES
  * ---------------------------------------------------
  * 1. CLOCK: 12h format with ticking seconds.
- * 2. MATH: 
- * - Rabbeinu Tam (Zman 11) = Schedule + 1 Minute.
- * - Candle Lighting = Schedule - 1 Minute.
- * 3. FLIP LOGIC:
- * - Date & Parsha: Flip to NEXT day at Alos (Zman #1).
- * - Omer: Flip to NEXT day 25 Minutes BEFORE Rabbeinu Tam (Zman #11).
- * 4. STATUS BOX:
- * - Shabbat: Friday Candles until Saturday RT (72).
- * - Motzaei Shabbat: At RT (72) on Saturday.
- * - Tachanun: Teal box + Reason.
- * - Default: "מוריד הטל / ותן ברכה".
+ * 2. MATH: Rabbeinu Tam (Zman 11) = Sched + 1 Min | Candles = Sched - 1 Min.
+ * 3. FLIP LOGIC: Date/Parsha at Alos | Omer 25m before Rabbeinu Tam.
+ * 4. STATUS BOX: Shabbat, Motzaei, Tachanun, or Default msg.
+ * 5. NIGHT MODE: 1:00 AM - 5:00 AM Blackout with Jumping Clock.
+ * 6. DYNAMIC OVERRIDE: Stays Awake if Col D includes "שבועות".
+ * 7. OMER BOX HIERARCHY: Moled (9 AM-12:30 PM) | Col D (Holiday) | Omer | Col F (Summer).
+ * 8. HOLIDAY PRIORITY: Col D (Holiday) overrides Motzei Shabbat and Tachanun labels.
+ * 9. VATODI'EINU SHIELD: If Col D has text on Saturday night, display "ותודיענו" instead of "אתה חוננתנו".
  */
-
 const $ = id => document.getElementById(id);
 var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyjNSAvH290v-6SFkXHJfFHAr8Kh4UlmZxAIQf7-PFFFHWTNOkYDGTggyPz130gG6_Low/exec"; 
 
-var defaultSummerMsg = ""; 
-var p1Images = [];
-var p1Index = 0;
-
-const OMER_STRINGS = {
-  1:"יום אחד", 2:"שני ימים", 3:"שלשה ימים", 4:"ארבעה ימים", 5:"חמשה ימים", 6:"ששה ימים", 7:"שבוע אחד",
-  8:"שמונה ימים שהם שבוע אחד ויום אחד", 9:"תשעה ימים שהם שבוע אחד ושני ימים", 10:"עשרה ימים שהם שבוע אחד וששלשה ימים",
-  11:"אחד עשר יום שהם שבוע אחד וארבעה ימים", 12:"שנים עשר יום שהם שבוע אחד וחמשה ימים", 13:"שלשה עשר יום שהם שבוע אחד וששה ימים", 14:"ארבעה עשר יום שהם שני שבועות",
-  15:"חמשה עשר יום שהם שני שבועות ויום אחד", 16:"ששה עשר יום שהם שני שבועות ושני ימים", 17:"שבעה עשר יום שהם שני שבועות ושלשה ימים", 18:"שמונה עשר יום שהם שני שבועות וארבעה ימים", 19:"תשעה עשר יום שהם שני שבועות וחמשה ימים", 20:"עשרים יום שהם שני שבועות וששה ימים", 21:"אחד ועשרים יום שהם שלשה שבועות",
-  22:"שנים ועשרים יום שהם שלשה שבועות ויום אחד", 23:"שלשה ועשרים יום שהם שלשה שבועות ושני ימים", 24:"ארבעה ועשרים יום שהם שלשה שבועות ושלשה ימים", 25:"חמשה ועשרים יום שהם שלשה שבועות וארבעה ימים", 26:"ששה ועשרים יום שהם שלשה שבועות וחמשה ימים", 27:"שבעה ועשרים יום שהם שלשה שבועות וששה ימים", 28:"שמונה ועשרים יום שהם ארבעה שבועות",
-  29:"תשעה ועשרים יום שהם ארבעה שבועות ויום אחד", 30:"שלשים יום שהם ארבעה שבועות ושני ימים", 31:"אחד ושלשים יום שהם ארבעה שבועות ושלשה ימים", 32:"שנים ושלשים יום שהם ארבעה שבועות וארבעה ימים", 33:"שלשה ושלשים יום שהם ארבעה שבועות וחמשה ימים", 34:"ארבעה ושלשים יום שהם ארבעה שבועות וששה ימים", 35:"חמשה ושלשים יום שהם חמשה שבועות",
-  36:"ששה ושלשים יום שהם חמשה שבועות ויום אחד", 37:"שבעה ושלשים יום שהם חמשה שבועות ושני ימים", 38:"שמונה ושלשים יום שהם חמשה שבועות ושלשה ימים", 39:"תשעה ושלשים יום שהם חמשה שבועות וארבעה ימים", 40:"ארבעים יום שהם חמשה שבועות וחמשה ימים", 41:"אחד וארבעים יום שהם חמשה שבועות וששה ימים", 42:"שנים וארבעים יום שהם ששה שבועות",
-  43:"שלשה וארבעים יום שהם ששה שבועות ויום אחד", 44:"ארבעה וארבעים יום שהם ששה שבועות ושני ימים", 45:"חמשה וארבעים יום שהם ששה שבועות ושלשה ימים", 46:"ששה וארבעים יום שהם ששה שבועות וארבעה ימים", 47:"שבעה וארבעים יום שהם ששה שבועות וחמשה ימים", 48:"שמונה וארבעים יום שהם ששה שבועות וששה ימים", 49:"תשעה וארבעים יום שהם שבעה שבועות"
-};
-const DAY_MAP = { "Sun": "יום ראשון", "Mon": "יום שני", "Tue": "יום שלישי", "Wed": "יום רביעי", "Thu": "יום חמישי", "Fri": "ערב ש\"ק", "Sha": "שבת קודש", "Sat": "שבת קודש" };
+var defaultSummerMsg = "", p1Images = [], p1Index = 0;
 var schedule = {}, lastDateIso = "", currentStatusHTML = "", currentlyHighlightedId = null;
+
+const OMER_STRINGS = { 1:"יום אחד", 2:"שני ימים", 3:"שלשה ימים", 4:"ארבעה ימים", 5:"חמשה ימים", 6:"ששה ימים", 7:"שבוע אחד", 8:"שמונה ימים שהם שבוע אחד ויום אחד", 9:"תשעה ימים שהם שבוע אחד ושני ימים", 10:"עשרה ימים שהם שבוע אחד וששלשה ימים", 11:"אחד עשר יום שהם שבוע אחד וארבעה ימים", 12:"שנים עשר יום שהם שבוע אחד וחמשה ימים", 13:"שלשה עשר יום שהם שבוע אחד וששה ימים", 14:"ארבעה עשר יום שהם שני שבועות", 15:"חמשה עשר יום שהם שני שבועות ויום אחד", 16:"ששה עשר יום שהם שני שבועות ושני ימים", 17:"שבעה עשר יום שהם שני שבועות ושלשה ימים", 18:"שמונה עשר יום שהם שני שבועות וארבעה ימים", 19:"תשעה עשר יום שהם שני שבועות וחמשה ימים", 20:"עשרים יום שהם שני שבועות וששה ימים", 21:"אחד ועשרים יום שהם שלשה שבועות", 22:"שנים ועשרים יום שהם שלשה שבועות ויום אחד", 23:"שלשה ועשרים יום שהם שלשה שבועות ושני ימים", 24:"ארבעה ועשרים יום שהם שלשה שבועות ושלשה ימים", 25:"חמשה ועשרים יום שהם שלשה שבועות וארבעה ימים", 26:"ששה ועשרים יום שהם שלשה שבועות וחמשה ימים", 27:"שבעה ועשרים יום שהם שלשה שבועות וששה ימים", 28:"שמונה ועשרים יום שהם ארבעה שבועות", 29:"תשעה ועשרים יום שהם ארבעה שבועות ויום אחד", 30:"שלשים יום שהם ארבעה שבועות ושני ימים", 31:"אחד ושלשים יום שהם ארבעה שבועות ושלשה ימים", 32:"שנים ושלשים יום שהם ארבעה שבועות וארבעה ימים", 33:"שלשה ושלשים יום שהם ארבעה שבועות וחמשה ימים", 34:"ארבעה ושלשים יום שהם ארבעה שבועות וששה ימים", 35:"חמשה ושלשים יום שהם חמשה שבועות", 36:"ששה ושלשים יום שהם חמשה שבועות ויום אחד", 37:"שבעה ושלשים יום שהם חמשה שבועות ושני ימים", 38:"שמונה ושלשים יום שהם חמשה שבועות ושלשה ימים", 39:"תשעה ושלשים יום שהם חמשה שבועות וארבעה ימים", 40:"ארבעים יום שהם חמשה שבועות וחמשה ימים", 41:"אחד וארבעים יום שהם חמשה שבועות וששה ימים", 42:"שנים וארבעים יום שהם ששה שבועות", 43:"שלשה וארבעים יום שהם ששה שבועות ויום אחד", 44:"ארבעה וארבעים יום שהם ששה שבועות ושני ימים", 45:"חמשה וארבעים יום שהם ששה שבועות ושלשה ימים", 46:"ששה וארבעים יום שהם ששה שבועות וארבעה ימים", 47:"שבעה וארבעים יום שהם ששה שבועות וחמשה ימים", 48:"שמונה וארבעים יום שהם ששה שבועות וששה ימים", 49:"תשעה וארבעים יום שהם שבעה שבועות" };
+const DAY_MAP = { "Sun": "יום ראשון", "Mon": "יום שני", "Tue": "יום שלישי", "Wed": "יום רביעי", "Thu": "יום חמישי", "Fri": "ערב ש\"ק", "Sha": "שבת קודש", "Sat": "שבת קודש" };
 
 function shiftTime(t, o) {
     if (!t || t.includes("--")) return "--:--:--";
@@ -246,25 +161,20 @@ function getSec(t, pm) {
     return (h * 3600) + (m * 60) + s;
 }
 function getIso(d) { return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,'0') + "-" + String(d.getDate()).padStart(2,'0'); }
+
 function fit(el, vhStart) {
     if (!el) return;
     let p = el.parentElement; let vh = vhStart; el.style.fontSize = vh + "vh";
     while (p.scrollHeight > p.clientHeight && vh > 1.0) { vh -= 0.1; el.style.fontSize = vh + "vh"; }
 }
+
 function updateClock() {
-    let n = new Date(); 
-    let h = n.getHours();
-    
-    // Create the three parts
-    let hh = (h % 12 || 12);
-    let mm = String(n.getMinutes()).padStart(2, '0');
-    let ss = String(n.getSeconds()).padStart(2, '0');
-    
-    // Wrap them in spans so they stay in their fixed "spots"
+    let now = new Date(); 
+    let h = now.getHours(), hh = (h % 12 || 12), mm = String(now.getMinutes()).padStart(2, '0'), ss = String(now.getSeconds()).padStart(2, '0');
     $('CLOCK').innerHTML = `<span class="c-unit">${hh}</span>:<span class="c-unit">${mm}</span>:<span class="c-unit">${ss}</span>`;
-    
-    $('ENG_DATE').innerText = n.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    $('ENG_DATE').innerText = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 }
+
 function loadWeather() {
     fetch("https://api.open-meteo.com/v1/forecast?latitude=40.598&longitude=-73.765&current_weather=true&temperature_unit=fahrenheit")
     .then(r => r.json()).then(d => { if(d.current_weather) $('WEATHER').innerText = " | " + Math.round(d.current_weather.temperature) + "°F"; });
@@ -281,8 +191,29 @@ function rotateP1() {
 }
 
 function updateUI() {
-    let now = new Date(); let h = now.getHours(); let cSec = (h*3600) + (now.getMinutes()*60) + now.getSeconds();
+    let now = new Date(); 
+    let h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
+
+    // --- 1. DATA PREP ---
+    let cSec = (h*3600) + (m*60) + s;
     let dToday = schedule[getIso(now)]; if (!dToday) return;
+    let holidayText = dToday.holidayText || ""; 
+
+    // --- 2. THE DYNAMIC SHAVUOS STAY-AWAKE ---
+    let isHolidayStayAwake = holidayText.includes("שבועות");
+
+    // --- 3. SLEEP PROTOCOL (1 AM - 5 AM) ---
+    if (!isHolidayStayAwake && h >= 1 && h < 5) {
+        $('SLEEP_OVERLAY').style.display = 'block';
+        $('SLEEP_CLOCK').innerText = (h % 12 || 12) + ":" + String(m).padStart(2, '0') + ":" + String(s).padStart(2, '0');
+        if (s === 0) {
+            let rx = Math.floor(Math.random() * 70) + 5, ry = Math.floor(Math.random() * 80) + 5;
+            $('SLEEP_CLOCK').style.left = rx + "vw"; $('SLEEP_CLOCK').style.top = ry + "vh";
+        }
+        return; 
+    } else { $('SLEEP_OVERLAY').style.display = 'none'; }
+
+    // --- 4. ZMANIM & FLIP LOGIC ---
     let rtSecs = getSec(dToday.z[10], true);
     let oIso = (cSec >= (rtSecs - 1500)) ? getIso(new Date(now.getTime() + 86400000)) : getIso(now);
     let dIso = (cSec < getSec(dToday.z[0], false)) ? getIso(new Date(now.getTime() - 86400000)) : getIso(now);
@@ -304,71 +235,70 @@ function updateUI() {
         $('z_spec_time').innerHTML = fmtZman(shiftTime(dToday.candle || dToday.z[9], -1));
     } else { $('row_special').style.display = 'none'; }
     
-    let moledInfo = dDate.moled || "";
+    // --- 5. OMER / MOLED / HOLIDAY BOX ---
+    let moledText = dDate.moled || "";
     let isMoledTime = (cSec >= 32400 && cSec <= 45000); 
+    let omerKey = dOmer.omerNum ? String(dOmer.omerNum).trim() : null;
+    let summerMsg = dOmer.clmF || defaultSummerMsg; 
 
-// --- THE BATTLE FOR THE BOTTOM BOX (CLEAN VERSION) ---
-    let omerKey = dOmer.omerNum? String(dOmer.omerNum).trim() : null;
-
-    if (moledInfo && isMoledTime) {
-        // 1. MOLED MODE
-        $('O2').innerText = moledInfo;
+    if (isMoledTime && moledText !== "") {
+        $('O2').innerText = moledText;
+        $('O_BECHINA').style.display = 'none';
+    } else if (holidayText !== "") {
+        $('O2').innerText = holidayText;
         $('O_BECHINA').style.display = 'none';
     } else if (omerKey) {
-        // 2. OMER MODE
         $('O2').innerText = "היום " + (OMER_STRINGS[omerKey] || omerKey + " יום") + " לעומר";
-        if (dOmer.bechina && dOmer.bechina.trim() !== "") {
-            $('O_BECHINA').innerText = dOmer.bechina;
-            $('O_BECHINA').style.display = 'block';
-        } else { $('O_BECHINA').style.display = 'none'; }
+        if (dOmer.bechina) { $('O_BECHINA').innerText = dOmer.bechina; $('O_BECHINA').style.display = 'block'; }
+        else { $('O_BECHINA').style.display = 'none'; }
     } else {
-        // 3. SUMMER MODE
+        $('O2').innerText = summerMsg;
         $('O_BECHINA').style.display = 'none';
-        $('O2').innerText = defaultSummerMsg;
     }
- // --- THE GOLDILOCKS FIT ---
-    // We start at 6.0vh. If it fits, it stays. 
-    // If it hits the walls, it shrinks until it clears.
-    fit($('O2'), 5.5); 
+    fit($('O2'), 5.5); fit($('O_BECHINA'), 3.8);
 
-    // Bechina text starts slightly smaller to stay subordinate
-    fit($('O_BECHINA'), 3.8);
-
-    // --- STATUS BOX LOGIC ---
-    let tR = dDate.tachReason, dayW = now.getDay();
+ // --- 6. STATUS BOX (Top Left) ---
+    let tR = dDate.tachReason; 
+    let dayW = now.getDay();
     let isShab = (dayW===5 && dToday.candle && cSec >= getSec(dToday.candle,true)) || (dayW===6 && cSec < rtSecs);
     let isMotz = (dayW===6 && cSec >= rtSecs);
     
     let head = "";
-    if (isShab) {
-        head = (moledInfo && moledInfo.trim() !== "") ? "שבת מברכים" : "שבת קודש";
-    } else if (isMotz) {
-        head = "מוצאי שבת";
-    } else {
-        head = tR ? "אין אומרים תחנון" : "מוריד הטל";
-    }
-
     let sub = "";
-    if (isShab) {
-        sub = (moledInfo && dDate.rcInfo) ? dDate.rcInfo : ""; 
-    } else if (isMotz) {
-        sub = "אתה חוננתנו";
-    } else {
-        sub = tR ? tR : "ותן ברכה";
-    }
 
-    let cls = (isShab || isMotz || !tR) ? "gold-box" : "teal-box";
+    if (isShab) {
+        head = (moledText && isMoledTime) ? "שבת מברכים" : "שבת קודש";
+        sub = dDate.rcInfo || "";
+    } else if (holidayText !== "") { 
+        // --- PRIORITY 1: HOLIDAY ---
+        head = holidayText; 
+        // If it's Saturday Night AND Yom Tov, remind them about Vatodi'einu!
+        // Otherwise, just say No Tachanun.
+        sub = isMotz ? "ותודיענו / א\"א תחנון" : "אין אומרים תחנון";
+    } else if (isMotz) {
+        // --- PRIORITY 2: STANDARD MOTZEI SHABBOS ---
+        head = "מוצאי שבת";
+        sub = "אתה חוננתנו";
+    } else if (tR) {
+        head = "אין אומרים תחנון";
+        sub = tR;
+    } else {
+        head = "מוריד הטל";
+        sub = "ותן ברכה";
+    }
+    
+    let cls = (isShab || isMotz || (holidayText === "" && !tR)) ? "gold-box" : "teal-box";
+    if (holidayText !== "") cls = "teal-box"; 
+
     let sH = `<div class="message-box ${cls}"><span id="status-head">${head}</span><span id="status-sub">${sub}</span></div>`;
     
-  if (sH !== currentStatusHTML) { 
+    if (sH !== currentStatusHTML) { 
         $('LEFT_MSG').innerHTML = sH; 
         currentStatusHTML = sH; 
-        
-        // --- NEW SAFETY BASELINES ---
-        // Lowered to ensure they sit centered in the 18vh height
-        fit($('status-head'), 5.5); 
-        fit($('status-sub'), 2.8);
+        fit($('status-head'), 6.0); 
+        fit($('status-sub'), 3.0);
     }
+
     let currentZmanTimes = [];
     for(let i=1; i<=11; i++) currentZmanTimes.push({id: 'r'+i, sec: getSec(dDate.z[i-1], i>=7)});
     let nIdx = currentZmanTimes.findIndex(z => z.sec > cSec), tgtId = nIdx !== -1 ? currentZmanTimes[nIdx].id : null;
@@ -393,12 +323,8 @@ function loadData() {
     });
 }
 
-setInterval(updateClock, 1000); 
-updateClock(); 
-loadWeather(); 
-setInterval(loadWeather, 900000);
-loadData(); 
-setInterval(loadData, 30000); 
-setInterval(updateUI, 1000);
-setInterval(rotateP1, 15000);
+setInterval(updateClock, 1000); updateClock(); loadWeather(); setInterval(loadWeather, 900000);
+loadData(); setInterval(loadData, 30000); setInterval(updateUI, 1000); setInterval(rotateP1, 15000);
 </script>
+</body>
+</html>
