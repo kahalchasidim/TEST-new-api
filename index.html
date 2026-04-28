@@ -70,8 +70,8 @@
   #O2 { 
     color: var(--gold); 
     font-weight: 800; 
-    line-height: 0.95; 
-    width: 96%; /* Increased from 92% to use more width */
+    line-height: 1.05; /* Relaxed it from 0.95 to fill more vertical space */
+    width: 98%; /* Use almost the whole width of the box */
     display: block; 
     margin: 0 auto; 
   }
@@ -262,11 +262,11 @@ function updateUI() {
         $('O_BECHINA').style.display = 'none';
         $('O2').innerText = defaultSummerMsg;
     }
-  // Start at 5.0 (The middle ground between 4.0 and 5.5)
-    fit($('O2'), 5.0); 
+  // Start at 8.0 (This forces it to find the absolute maximum size)
+    fit($('O2'), 8.0); 
 
-    // Start at 3.2
-    fit($('O_BECHINA'), 3.2);
+    // Start at 4.5
+    fit($('O_BECHINA'), 4.5);
 
     let tR = dDate.tachReason, dayW = now.getDay();
     let isShab = (dayW===5 && dToday.candle && cSec >= getSec(dToday.candle,true)) || (dayW===6 && cSec < rtSecs);
